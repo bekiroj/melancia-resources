@@ -49,8 +49,10 @@ sRent = {
 
 					setTimer(function()
 						source:outputChat('[Melancia]#D0D0D0 Kiraladığın aracın süresi sona erdi.',195,184,116,true)
-						exports['mrp_items']:deleteAll(3, -source:getData('dbid'))
 						car:destroy()
+						if source then
+							exports['mrp_items']:deleteAll(3, -source:getData('dbid'))
+						end
 					end, 3600000, 1)
 				else
 					source:outputChat('[Melancia]#D0D0D0 Aracı kiralamak için yeterli paraya sahip değilsin.',195,184,116,true)

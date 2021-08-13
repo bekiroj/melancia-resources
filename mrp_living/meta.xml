@@ -1,0 +1,8 @@
+<meta>
+	<script src="c_living.lua" type="client"/>
+	<script src="s_living.lua" type="server"/>
+
+	<!--Exporting Functions-->
+	<export function="getPlayerHunger" type="client"/>
+	<export function="getPlayerThirst" type="client"/>
+</meta>

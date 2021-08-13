@@ -8,9 +8,6 @@
 
     <script src="c_nametags.lua" type="client" cache="false" />
     
-    <script src="c_living.lua" type="client" cache="false" />
-    <script src="s_living.lua" type="server" />
-    
     <script src="c_overlay_top_right.lua" type="client" cache="false" />
     <script src="c_overlay_bottom_center.lua" type="client" cache="false" />
     <script src="s_overlay_basic_info.lua" type="server" />
