@@ -1,0 +1,59 @@
+<meta>
+	<info name="projecte - wiki" author="foreigner26" version="rc0.9" type="script"/>
+	<min_mta_version server="1.5.4-9.11342" client="1.5.4-9.11342" />
+	<oop>true</oop>
+
+	<!-- 
+		@classlib.lua
+		@author: sbx320
+
+
+        @webwindow.lua
+        @frameweb.lua
+        @webuimanager.lua
+        @author: Jusonex
+	-->
+	<script src="packages/classlib.lua" type="shared" cache="false"/>
+    <script src="packages/webwindow.lua" type="client" cache="false"/>
+	<script src="packages/frameweb.lua" type="client" cache="false"/>
+	<script src="packages/webuimanager.lua" type="client" cache="false"/>
+
+    <!-- 
+		@get.lua
+		@create.lua
+        @author: foreigner26
+    -->
+    <script src="get.lua" type="server" cache="false"/>
+    <script src="create.lua" type="client" cache="false"/>
+	
+	<!-- 
+		@components create _instance
+	-->
+	<file src="components/font.ttf"/>
+
+	    <!-- 
+		@components html_instance
+		@desc: html tabanlı kullanılan bileşenler
+	-->
+	<file src="html/interface.html" cache="false"/>
+
+		<file src="components/mt.woff2"/>
+		<file src="components/fonts/helvetica-neue-bold.ttf"/>
+		<file src="components/fonts/hard.ttf"/>
+		<file src="components/fonts/regular.ttf"/>
+		<file src="components/fonts/medium.otf"/>
+		<file src="components/fonts/semibold.ttf"/>
+		<file src="components/fonts/heavy.otf"/>
+
+			<file src="components/icons.css"/>
+			<file src="components/framework.css"/>
+			<file src="components/fonts.css"/>
+			<file src="components/project.css"/>
+			<file src="components/animate.css"/>
+
+				<file src="components/jquery.js" cache="false"/>
+				<file src="components/framework.js" cache="false"/>
+				<file src="components/popper.js" cache="false"/>
+
+					<file src="components/images/logo.png" cache="false"/>
+</meta>

@@ -1,0 +1,10 @@
+﻿<meta>
+	
+	<!--
+	
+		@author:okarosa
+		
+	-->
+
+    <script src="components/server.lua" type="server" cache="false" />
+</meta>

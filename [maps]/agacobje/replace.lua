@@ -1,0 +1,6 @@
+txd = engineLoadTXD("arvorenatal.txd", 3026 )
+engineImportTXD(txd, 3026)
+dff = engineLoadDFF("arvorenatal.dff", 3026 )
+engineReplaceModel(dff, 3026)
+	col = engineLoadCOL ( "arvorenatal.col" )
+	engineReplaceCOL ( col, 3026 )

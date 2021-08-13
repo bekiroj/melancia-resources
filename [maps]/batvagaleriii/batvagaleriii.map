@@ -1,0 +1,15 @@
+<map edf:definitions="editor_main">
+    <removeWorldObject id="removeWorldObject (telgrphpoleall) (1)" radius="11.724485" interior="0" model="1307" lodModel="0" posX="2072.0679" posY="-1879.3503" posZ="13.68977" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
+    <removeWorldObject id="removeWorldObject (trafficlight1) (1)" radius="7.3841176" interior="0" model="1315" lodModel="0" posX="2075.7666" posY="-1883.0502" posZ="13.83531" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
+    <object id="object (int_kbsgarage2) (3)" breakable="true" interior="0" collisions="true" alpha="255" model="14826" doublesided="false" scale="1" dimension="0" posX="2067.1006" posY="-1882.4004" posZ="13.3" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (ADAM_V_DOOR) (1)" breakable="true" interior="0" collisions="true" alpha="255" model="1569" doublesided="false" scale="1" dimension="0" posX="2058" posY="-1884.1553" posZ="12.5" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (lckupgrgdoor_lvs) (2)" breakable="true" interior="0" collisions="true" alpha="255" model="8948" doublesided="false" scale="2" dimension="0" posX="2053.5" posY="-1884.292" posZ="14.3" rotX="0" rotY="0" rotZ="270"></object>
+    <object id="object (bb_pickup) (1)" breakable="true" interior="0" collisions="true" alpha="255" model="3096" doublesided="false" scale="1" dimension="0" posX="2053.4004" posY="-1884.5" posZ="19.3" rotX="0" rotY="0" rotZ="0"></object>
+    <object id="object (meshfence1_LAn) (1)" breakable="true" interior="0" collisions="true" alpha="255" model="4100" doublesided="false" scale="1" dimension="0" posX="2071.6006" posY="-1884.0996" posZ="14.2" rotX="0" rotY="0" rotZ="49.999"></object>
+    <object id="object (meshfence1_LAn) (2)" breakable="true" interior="0" collisions="true" alpha="255" model="4100" doublesided="false" scale="1" dimension="0" posX="2071.5" posY="-1863.2002" posZ="14.1" rotX="0" rotY="0" rotZ="49.999"></object>
+    <object id="object (WS_floodlight) (1)" breakable="true" interior="0" collisions="true" alpha="255" model="3864" doublesided="false" scale="1" dimension="0" posX="2042.5996" posY="-1882.0996" posZ="18.6" rotX="0" rotY="0" rotZ="199.995"></object>
+    <object id="object (CJ_BUSH_PROP3) (2)" breakable="true" interior="0" collisions="true" alpha="255" model="1360" doublesided="false" scale="1" dimension="0" posX="2072" posY="-1862.2002" posZ="15.3" rotX="0" rotY="0" rotZ="0"></object>
+    <removeWorldObject id="removeWorldObject (lamppost3) (1)" radius="6.6149273" interior="0" model="1226" lodModel="0" posX="2076.0901" posY="-1894.7812" posZ="12.80331" rotX="0" rotY="0" rotZ="0"></removeWorldObject>
+    <object id="object (kb_couch07) (4)" breakable="true" interior="0" alpha="255" model="1710" doublesided="false" scale="1" dimension="0" posX="2060.7" posY="-1867.5" posZ="12.5" rotX="0" rotY="0" rotZ="30"></object>
+    <object id="object (CJ_TV_TABLE2) (1)" breakable="true" interior="0" alpha="255" model="2311" doublesided="false" scale="1" dimension="0" posX="2062.3999" posY="-1868.3" posZ="12.5" rotX="0" rotY="0" rotZ="32"></object>
+</map>

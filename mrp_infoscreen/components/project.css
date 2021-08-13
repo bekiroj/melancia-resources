@@ -1,0 +1,64 @@
+/* 
+    #Project.css
+    #author:foreigner26
+*/
+
+body {-webkit-font-smoothing: antialiased; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; background:transparent; } input {-webkit-user-select:none !important;} canvas { width: 100%; height: 100% } tr {border-bottom:none;} :focus{outline: none !important; border:none !important;}
+body.modal-open .background-container{-webkit-filter: blur(4px); -moz-filter: blur(4px); -o-filter: blur(4px); -ms-filter: blur(4px); filter: blur(4px); filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');}
+
+
+
+/* 
+    #Genel Stiller & #General Styles
+*/
+
+.overlay-effect {background:#121212; width:100%; height:100%; display:inline-block;}
+.animated05 {animation-duration:0.4s;}
+
+h6[tag="left-upper-h6"] {position:relative; width:100px; display:inline-block; float:left; margin:3vh 2vmax; font-size:1.3vh; font-family:"SF Pro" !important; color:rgba(254, 196, 0,0.8);}
+h6[tag="left-upper-h6"]:after {content:'Sorumuz var \A Wiki?'; position:absolute; z-index:2; white-space: pre-wrap;}
+h6[tag="left-upper-h6"]:before {content:'F1'; position:absolute; z-index:1; color:#3B3B3B; top:-1.5vh; left:-1vmax; font-size:3vh; font-weight:600;}
+
+.navigation-private {display:inline-block; float:right; width:auto; height:auto;}
+.navigation-private ul {margin:0px 2vmax 0px 0px !important; padding:0px !important;}
+.navigation-private ul li a {display:inline-block; float:right; font-family:"SF Pro" !important; transition:color 0.3s; font-size:1.3vh; color:rgba(254, 254, 254,0.6) !important; margin:3vh 1vmax;}
+.navigation-private ul li a.active {color:rgba(254,254,254,0.9) !important; background:transparent !important;}
+.navigation-private ul li a:hover {transition:color 0.3s; text-decoration:none;  color:rgba(254, 254, 254,0.9) !important;}
+
+.info-container {width:calc(100% - 2vmax); height:auto; padding:12px; border-radius:6px; overflow:hidden; margin:0px 0px 0px 2vmax;}
+.inside-container {width:calc(100% - 2vmax); height:auto; padding:12px; border-radius:6px; overflow:hidden; margin:1vh 0px 0px 2vmax;}
+.inside-container h6 {color:rgba(240,240,240,0.9); font-size:2vh; font-family:"SF Pro" !important; font-weight:600;}
+.inside-container h6[tag="minimalize"] {color:rgba(240,240,240,0.9); font-size:1.6vh; font-family:"SF Pro" !important; font-weight:600;}
+.inside-container h6[tag="minimalize-2"] {color:rgba(240,240,240,0.9); font-size:1.3vh; font-family:"SF Pro" !important; font-weight:600;}
+p.dialog {color:rgba(240,240,240,0.8); width:calc(100% - 2vmax); display:inline-block; font-family:"SF Pro" !important; font-size:1.1vh; word-wrap: break-word; margin:0px !important}
+
+.article-point {color:rgba(240,240,240,0.8); overflow:hidden; transition:color 0.3s; font-family:"SF Pro" !important; font-weight:600; font-size:1.2vh;}
+.article-point.active {background:transparent !important; color:rgba(240,240,240,0.8) !important;}
+.article-point:hover {color:rgba(254, 196, 0,0.8) !important; font-weight:600 !important; transition:color 0.3s; font-family:"SF Pro" !important;}
+
+a[tag="get-back"] {display:inline-block; position:relative; font-family:"SF Pro"; font-size:1.2vh; transition:color 0.3s; top:-0.6vh; width:auto; float:right; color:rgba(240,240,240,0.8); text-decoration:none;}
+a[tag="get-back"]:hover {color:rgba(254, 196, 0,0.8) !important; transition:color 0.3s;}
+a[tag="get-back"] i {font-size:3vh;}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: transparent; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: transparent; 
+  }
+
+  

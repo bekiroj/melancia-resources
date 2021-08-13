@@ -1,0 +1,4 @@
+<map edf:definitions="editor_main">
+    <object id="object (para_pack) (1)" breakable="true" interior="0" alpha="255" dimension="0" model="3026" scale="1" doublesided="false" collisions="true" posX="1283.7" posY="-2350.1001" posZ="22.8" rotX="0" rotY="0" rotZ="84"></object>
+    <object id="object (CJ_MONEY_BAG) (1)" breakable="true" interior="0" alpha="255" dimension="0" model="1550" scale="15" doublesided="false" collisions="true" posX="1283" posY="-2343.7" posZ="16.5" rotX="15" rotY="0" rotZ="0"></object>
+</map>

@@ -1,0 +1,29 @@
+<meta>
+	<script src="firemod_c.lua" type="client" />
+    <script src="sound_c.lua" type="client" />
+    <script src="opti_c.lua" type="client" />
+    <script src="stat_s.lua" type="server" />
+    <script src="punish_c.lua" type="client" />
+
+    <file src="components/firingmode.mp3"/>
+    <file src="components/no_ammo.mp3"/>
+    <file src="components/reload_1.mp3"/>
+    <file src="components/reload_2.mp3"/>
+    <file src="components/reload_3.mp3"/>
+	<file src="components/weap/AK-47.wav"/>
+	<file src="components/weap/beanbag.wav"/>
+	<file src="components/weap/Colt45.wav"/>
+	<file src="components/weap/CombatShgun.wav"/>
+	<file src="components/weap/Deagle.wav"/>
+	<file src="components/weap/M4.wav"/>
+	<file src="components/weap/MP5.wav"/>
+	<file src="components/weap/Rifle.wav"/>
+	<file src="components/weap/Sawed-Off.wav"/>
+	<file src="components/weap/Shotgun.wav"/>
+	<file src="components/weap/Silenced.wav"/>
+	<file src="components/weap/Sniper.wav"/>
+	<file src="components/weap/Tazer.wav"/>
+	<file src="components/weap/tec9.wav"/>
+	<file src="components/weap/UZI.wav"/>
+
+</meta>

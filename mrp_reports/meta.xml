@@ -1,0 +1,9 @@
+<meta>
+	<script src="s_reports.lua"/>
+    <script src="c_reports.lua" type="client" cache="false" />
+
+	<script src="g_reports.lua" type="shared"/>
+	<export function="getReportTypes" type="shared" />
+	<export function="showToAdminPanel" type="server" />
+	<export function="reportLazyFix" type="server"/>
+</meta>

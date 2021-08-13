@@ -1,0 +1,7 @@
+<meta>
+    <info author="Convertida Por: +Monster MrPointGamer" name="ArvoredeNatal" version="1.5.4" type="script" />
+    <script src="replace.lua" type="client" cache="false" />
+	<file src="arvorenatal.txd" />
+	<file src="arvorenatal.col" />
+	<file src="arvorenatal.dff" />
+	</meta>

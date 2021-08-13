@@ -1,0 +1,37 @@
+﻿<meta>
+	<oop>true</oop>
+
+	<script src = "client.lua" type = "client" cache="false" />
+	<script src = "server.lua" type = "server" />
+
+	<file src = "files/audi.txd" download = "false" model = "529" />
+	<file src = "files/audi.dff" download = "false" model = "529" /> 
+
+	<file src = "files/range.txd" download = "false" model = "490" />
+	<file src = "files/range.dff" download = "false" model = "490" /> 
+
+	<file src = "files/amg.txd" download = "false" model = "602" />
+	<file src = "files/amg.dff" download = "false" model = "602" /> 
+
+	<file src = "files/masserati.txd" download = "false" model = "402" />
+	<file src = "files/masserati.dff" download = "false" model = "402" /> 
+
+	<file src = "files/bmw.txd" download = "false" model = "412" />
+	<file src = "files/bmw.dff" download = "false" model = "412" /> 
+
+	<file src = "files/596.txd" download = "false" model = "596" />
+	<file src = "files/596.dff" download = "false" model = "596" /> 
+
+	<file src = "files/598.txd" download = "false" model = "598" />
+	<file src = "files/598.dff" download = "false" model = "598" />
+
+	<file src = "files/tofask.txd" download = "false" model = "561" />
+	<file src = "files/tofask.dff" download = "false" model = "561" />
+
+	<file src = "files/passat.txd" download = "false" model = "405" />
+	<file src = "files/passat.dff" download = "false" model = "405" />
+    
+    <file src = "files/ambulans.txd" download = "false" model = "416" />
+	<file src = "files/ambulans.dff" download = "false" model = "416" /> 
+   
+</meta>

@@ -1,0 +1,20 @@
+<meta>
+
+	<!-- 
+		author: @bekiroj
+		Drug System 
+	-->
+
+	<!-- oop -->
+	<oop>true</oop>
+
+	<!-- packages -->
+    <script src="packages/async.lua" type="shared"/>
+
+    <!-- config -->
+    <script src="config/config.lua" type="shared"/>
+
+	<!-- server -->
+	<script src="server/server.lua" type="server" />
+
+</meta>
