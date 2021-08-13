@@ -50,7 +50,7 @@ Racing.constructor = function()
 					dxDrawRectangle(screen.x/2-575/2, screen.y/2+137/2, 150, 30, tocolor(10,10,10,250))
 					dxDrawText('Kırmızı',screen.x/2-465/2, screen.y/2+148/2, 650, 150, tocolor(200,200,200,250), 1, font)
 					if not active and not finish then
-						localPlayer:setData("money", tonumber(localPlayer:getData('money') - 5000))
+						triggerServerEvent('horserace.take.money',localPlayer)
 						selected = 'Kırmızı'
 						active = true
 					end
@@ -63,7 +63,7 @@ Racing.constructor = function()
 					dxDrawRectangle(screen.x/2-575/2, screen.y/2+200/2, 150, 30, tocolor(10,10,10,250))
 					dxDrawText('Sarı',screen.x/2-465/2, screen.y/2+211/2, 650, 150, tocolor(200,200,200,250), 1, font)
 					if not active and not finish then
-						localPlayer:setData("money", tonumber(localPlayer:getData('money') - 5000))
+						triggerServerEvent('horserace.take.money',localPlayer)
 						selected = 'Sarı'
 						active = true
 					end
@@ -76,7 +76,7 @@ Racing.constructor = function()
 					dxDrawRectangle(screen.x/2-575/2, screen.y/2+265/2, 150, 30, tocolor(10,10,10,250))
 					dxDrawText('Mavi',screen.x/2-465/2, screen.y/2+276/2, 650, 150, tocolor(200,200,200,250), 1, font)
 					if not active and not finish then
-						localPlayer:setData("money", tonumber(localPlayer:getData('money') - 5000))
+						triggerServerEvent('horserace.take.money',localPlayer)
 						selected = 'Mavi'
 						active = true
 					end
@@ -133,7 +133,7 @@ end
 Racing.check = function()
 	if winner == selected then
 		outputChatBox('[!]#D0D0D0 Seçtiğin at kazandı ve ₺12500 kazandın, iyi şanslar!',195,184,116,true)
-		localPlayer:setData("money", tonumber(localPlayer:getData('money') + 12500))
+		triggerServerEvent('horserace.give.money',localPlayer)
 	end
 end
 

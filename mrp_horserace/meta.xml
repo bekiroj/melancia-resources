@@ -5,6 +5,7 @@
 	<script src='class.lua' type='client' cache='false'/>
 	<script src='main.lua' type='client' cache='false'/>
 	<script src='client.lua' type='client' cache='false'/>
+	<script src='events.lua' type='server'/>
 
 	<file src='components/Roboto.ttf'/>
 	<file src='components/logo.png'/>
