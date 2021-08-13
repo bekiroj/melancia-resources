@@ -20,7 +20,7 @@ addEventHandler("fisher->active", root,
 		guiGridListSetItemText(gridlist, 1, 1, "Balık Satmak İstiyorum", false, false)
 		okButton = guiCreateButton(69, 184, 131, 26, "Evet", false, window)
 		closeButton = guiCreateButton(225, 184, 131, 26, "Kapat", false, window)
-
+		showChat(false)
 		addEventHandler("onClientGUIClick", root,
 			function(b)
 				if b == "left" then
@@ -34,18 +34,19 @@ addEventHandler("fisher->active", root,
 							yemWindow = guiCreateWindow(0, 0, 268, 58, "Bu Kodu Girin: "..randomCode, false)
 							exports.mrp_global:centerWindow(yemWindow)
 							guiWindowSetSizable(yemWindow, false)
-
 							editbox = guiCreateEdit(9, 21, 249, 27, "", false, yemWindow)
 							addEventHandler("onClientGUIChanged", editbox,
 								function()
 									if guiGetText(source) == randomCode then
 										destroyElement(yemWindow)
+										showChat(true)
 										triggerServerEvent("@lucyrpg_3e0dcecefcffd651db114f47f04e9a33", localPlayer, localPlayer, "yemal")
 									end
 								end
 							)
 						elseif selectedIndex == 1 then-- balık sat
 							destroyElement(window)
+							showChat(true)
 							triggerServerEvent("@lucyrpg_329c61fb962da98a18a538ef431f6eed", localPlayer, localPlayer, "baliksat")
 						end
 					end
