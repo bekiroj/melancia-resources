@@ -1,13 +1,13 @@
-local miktar = 550
+local miktar = 700
 function kamyonparaVer(thePlayer)
 	if getElementData(thePlayer, "vip") == 1 then
-		miktar = 575
+		miktar = 725
 	elseif getElementData(thePlayer, "vip") == 2 then
-		miktar = 600
+		miktar = 750
 	elseif getElementData(thePlayer, "vip") == 3 then
-		miktar = 625
+		miktar = 775
 	elseif getElementData(thePlayer, "vip") == 4 then
-		miktar = 650
+		miktar = 800
 	end
 	exports.mrp_global:giveMoney(thePlayer, miktar)
 	outputChatBox("[!] #FFFFFFTebrikler, bu turdan ₺"..miktar.." kazandınız!", thePlayer, 0, 255, 0, true) -- 520
