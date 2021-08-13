@@ -30,9 +30,6 @@
 	<file src="mods/raindanc.txd"/>
 	<file src="mods/raindanc.dff"/>
 
-	<file src="mods/Ciggy1.txd"/>
-	<file src="mods/Ciggy1.dff"/>
-
 	<file src="mods/factory.dff"/>
 	<file src="mods/factory.col"/>
 
@@ -90,6 +87,8 @@
 	<file src="items/SantaHats.txd"/>
 	<file src="items/flashlight.dff"/>
 	<file src="items/flashlight.txd"/>
+	<file src="items/Ciggy1.dff"/>
+	<file src="items/Ciggy1.txd"/>
 
 	<!-- Verona Mall -->
 	<file src="verona/lsmall_shops.txd"/>

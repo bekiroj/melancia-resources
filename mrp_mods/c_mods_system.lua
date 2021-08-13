@@ -18,11 +18,6 @@ function applyMods()
 	engineImportTXD(skinTXD, 287)
 	--SEB Skin End
 	]]
-
-	cigarDFF = engineLoadDFF("mods/Ciggy1.dff", 3027)
-	engineReplaceModel(cigarDFF, 3027)
-	cigarTXD = engineLoadTXD("mods/Ciggy1.txd")
-	engineImportTXD(cigarTXD, 3027)
 	--HSU Mod Start
 
 	hsuDFF = engineLoadDFF("mods/hsu.dff", 494)
@@ -163,6 +158,11 @@ function applyMods()
 	engineImportTXD(txd,2880)
 	local dff = engineLoadDFF("items/cola.dff",2880)
 	engineReplaceModel(dff,2880)
+
+	local txd = engineLoadTXD("items/Ciggy1.txd")
+	engineImportTXD(txd,3027)
+	local dff = engineLoadDFF("items/Ciggy1.dff",3027)
+	engineReplaceModel(dff,3027)
 
 	local txd = engineLoadTXD("items/parapakx.txd")
 	engineImportTXD(txd,3026)
