@@ -183,7 +183,7 @@ function setFare()
 			local lbl = guiCreateLabel(20,20,150,20,"Kilometre başına düşen ücret",false,gui_fareWin)
 			--local inpt = guiCreateEdit(20,40,60,20,"1",false,gui_fareWin)
 			
-			local lbl2 = guiCreateLabel(20,70,260,20,"₺"..string.format("%.2f", tostring(minFare)).."/km",false,gui_fareWin)
+			local lbl2 = guiCreateLabel(20,70,260,20,"$"..string.format("%.2f", tostring(minFare)).."/km",false,gui_fareWin)
 				guiLabelSetHorizontalAlign(lbl2, "center", false)
 			
 			local scroll = guiCreateScrollBar(20,40,260,20,true,false,gui_fareWin)
@@ -194,7 +194,7 @@ function setFare()
 					local percent = (guiScrollBarGetScrollPosition(scroll)/100)
 					local scrollFare = (((maxFare-minFare)*percent)+minFare)
 					scrollFare = string.format("%.2f", tostring(scrollFare))
-					guiSetText(lbl2, "₺"..tostring(scrollFare).."/km")
+					guiSetText(lbl2, "$"..tostring(scrollFare).."/km")
 					scrollFare = tonumber(scrollFare)
 				end
 			end, false)

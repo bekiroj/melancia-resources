@@ -31,6 +31,22 @@ addEventHandler("onVehicleEnter", root,
 				end
 		end
 )
+
+function levelkoruma (player, seat)
+	if taxiModels[getElementModel(source)] and getElementData(player, "level") == 1 and (seat == 0) then
+   		cancelEvent()
+   		outputChatBox("#336600[!] Karakterinizin bu aracı kullanabilmesi için en az 2 level olması gerekmektedir.", player,0,0,0,true)
+   	end
+end
+addEventHandler("onVehicleStartEnter", getRootElement(), levelkoruma)
+
+function mekanikkoruma (player, seat)
+	if taxiModels[getElementModel(source)] and getElementData(player, "mekanik") == 1 and (seat == 0) then
+   		cancelEvent()
+   		outputChatBox("[!]#ffffff İllegal bir meslekteyken sivil mesleklerinden faydalanamazsınız!",player,100,100,255,true)
+   	end
+end
+addEventHandler("onVehicleStartEnter", getRootElement(), mekanikkoruma)
 --[[
 addEventHandler("onResourceStart", getResourceRootElement(getThisResource()),
 		function (startedRes)

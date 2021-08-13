@@ -148,25 +148,6 @@ function showStats(thePlayer, commandName, targetPlayerName)
 			{"Bu karakterinizde: " .. hoursplayed .. " saat geçirdiniz."},
 		}
 	end
-	--CAREER
-	local job = getElementData(thePlayer, "job") or 0
-	if job == 0 then
-		if isOverlayDisabled then
-		else
-		end
-	else
-		local jobName = exports["mrp_jobs"]:getJobTitleFromID(job)
-		local joblevel = getElementData(thePlayer, "jobLevel") or 1
-		local jobProgress = getElementData(thePlayer, "jobProgress") or 0
-		if isOverlayDisabled then
-			outputChatBox("   - Skill Level: "..joblevel, showPlayer)
-			outputChatBox("   - Progress: "..jobProgress, showPlayer)
-		else
-			--table.insert(info, {" Career: "..jobName})
-			--table.insert(info, {"   - Skill Level: "..joblevel})
-			--table.insert(info, {"   - Progress: "..jobProgress})
-		end
-	end
 	--CARRIED
 	local carried = "Taşınan Ağırlık: "..("%.2f/%.2f" ):format( exports["mrp_items"]:getCarriedWeight( thePlayer ), exports["mrp_items"]:getMaxWeight( thePlayer ) ).." kg(s)"
 	if isOverlayDisabled then
@@ -181,7 +162,6 @@ function showStats(thePlayer, commandName, targetPlayerName)
 	if isOverlayDisabled then
 	else
 		table.insert(info, {""})
-		table.insert(info, {"Meslek: "..exports["mrp_jobs"]:getJobTitleFromID(job)..""})
 		table.insert(info, {"Cüzdan: ₺"..exports.mrp_global:formatMoney(money)})
 		table.insert(info, {"Bankadaki Para: ₺"..exports.mrp_global:formatMoney(bankmoney)})
 		table.insert(info, {"Bakiye: "..exports.mrp_global:formatMoney(currentGC) .. " ₺ "})
