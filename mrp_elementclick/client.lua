@@ -191,7 +191,7 @@ end
 Click.pullCharOptions = function()
 	pulledCharOptions = {
 		{"Karakter Değiştir", function()
-			triggerServerEvent("karakterDegistirme", localPlayer)
+			executeCommandHandler("saveme")
 			exports["mrp_auth"]:options_logOut(localPlayer)
 		end,},
 		{"Vazgeç", function()
