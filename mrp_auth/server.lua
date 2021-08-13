@@ -973,6 +973,15 @@ function newCharacter_create(characterName, characterDescription, race, gender, 
 	end
 	languageselected = 1
 
+	exports.mrp_global:giveItem( client, 16, skin )
+	-- ID CARD
+	exports.mrp_global:giveItem( client, 152, characterName..";"..(gender==0 and "Bay" or "Bayan")..";"..exports.mrp_global:formatDate(day or 1).." "..exports.mrp_global:numberToMonth(month or 1).." "..exports.cr_global:getBirthYearFromAge(age)..";"..fingerprint)		-- Briefcase
+	-- Briefcase
+	if exports.mrp_global:giveItem( client, 160, 1 ) then
+		triggerEvent("artifacts:toggle", client, client, "briefcase")
+	end
+	exports['mrp_items']:loadItems(client, true )
+
 	dbExec(mysql:getConnection(), "INSERT INTO `characters` SET `charactername`='" .. (characterName).. "', `x`='410.392', `y`='-1544.48', `z`='32.2734', `rotation`='"..location[4].."', `interior_id`='"..location[5].."', `dimension_id`='"..location[6].."', `lastarea`='"..(location[7]).."', `gender`='" .. (gender) .. "', `skincolor`='" .. (race) .. "', `weight`='" .. (weight) .. "', `height`='" .. (height) .. "', `description`='', `account`='" .. (accountID) .. "', `skin`='" .. (skin) .. "', `age`='" .. (age) .. "', `fingerprint`='" .. (fingerprint) .. "', `nation`='" .. (nationselected) .. "', `lang1`='" .. (languageselected) .. "', `lang1skill`='100', `lang2`='1', `lang2skill`='100', `currLang`='2', `month`='" .. (month or "1") .. "', `day`='" .. (day or "1").."', `walkingstyle`='" .. (walkingstyle).."' ")
 
 	local characters = {}
