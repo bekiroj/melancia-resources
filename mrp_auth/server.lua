@@ -264,7 +264,6 @@ function playerRegister(username,password,confirmPassword, email)
 	local encryptionRule = tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))..tostring(math.random(0,9))
 	local encryptedPW = string.lower(md5(string.lower(md5(password))..encryptionRule))
 	local ipAddress = getPlayerIP(client)
-	triggerClientEvent(client,"set_warning_text",client,"Register","Başarıyla kayıt oldunuz!")
 	dbQuery(playerRegisterCallback, {client, username, password, mtaSerial, ipAddress, encryptedPW, encryptionRule, email}, mysql:getConnection(), "SELECT username,mtaserial FROM accounts WHERE (username = ? or mtaserial = ?)", username, mtaSerial)
 end
 addEvent("accounts:register:attempt",true)
@@ -275,6 +274,7 @@ function playerRegisterCallback(queryHandler, client, username, password, serial
 	if rows > 0 then
 		triggerClientEvent(client,"set_warning_text",client,"Register","Kullanıcı adı/email kullanılıyor veya yeni bir hesap oluşturmaya çalışıyorsun! ("..result[1]["username"]..")")
 	else
+		triggerClientEvent(client,"set_warning_text",client,"Register","Başarıyla kayıt oldunuz!")
 		dbExec(mysql:getConnection(), "INSERT INTO `accounts` SET `username`='"..username.."', `password`='"..encryptedPW.."', `email`='"..email.."', `registerdate`=NOW(), `ip`='"..ip.."', `salt`='"..encryptionRule.."', `mtaserial`='"..serial.."', `activated`='1' ")
 		triggerClientEvent(client,"accounts:register:complete",client, username, password)
 	end
