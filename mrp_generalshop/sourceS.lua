@@ -90,7 +90,7 @@ function saksi_ver()
 		outputChatBox("[!]#ffffff Eşyayı satın almak için yeterli miktarda paran yok.",source,100,100,255,true)
 	return end
 	outputChatBox("[!]#ffffff Kasaya ₺150 ödeyerek 1 adet Saksı satın aldınız.",source,100,100,255,true)
-	exports.mrp_global:giveItem(source, 252, 1)
+	exports.mrp_global:giveItem(source, 333, 1)
 end
 addEvent("shop_sistem_saksi", true)
 addEventHandler("shop_sistem_saksi", getRootElement(), saksi_ver)
