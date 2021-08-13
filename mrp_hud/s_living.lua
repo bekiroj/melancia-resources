@@ -1,23 +1,27 @@
-local mysql = exports.mrp_mysql
-
-local saveData = function()
-	for index, value in ipairs(getElementsByType("player")) do
-		if getElementData(value, 'loggedin') == 1 then
-			local id = getElementData(value, "dbid")
-			if id then
-				local minutesplayed = getElementData(value, "minutesPlayed")
-				local hoursplayed = getElementData(value, "hoursplayed")
-				local level = getElementData(value, "level")
-				local hoursaim = getElementData(value, "hoursaim")
-				dbExec(mysql:getConnection(),"UPDATE `characters` SET `minutesPlayed`='"..minutesplayed.."' WHERE `id`='"..id.."' ")
-				dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursplayed`='"..hoursplayed.."' WHERE `id`='"..id.."' ")
-				dbExec(mysql:getConnection(),"UPDATE `characters` SET `level`='"..level.."' WHERE `id`='"..id.."' ")
-				dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursaim`='"..hoursaim.."' WHERE `id`='"..id.."' ")
-			end
-		end
+﻿local mysql = exports.mrp_mysql
+addEvent("kaydet:dakikavesaat", true)
+function veriKaydetDakikaveSaat(client)
+	local minutesplayed = getElementData(client, "minutesPlayed")
+	local hoursplayed = getElementData(client, "hoursplayed")
+	local id = getElementData(client, "dbid") -- account:character:id
+	if id then
+		dbExec(mysql:getConnection(),"UPDATE `characters` SET `minutesPlayed`='"..minutesplayed.."' WHERE `id`='"..id.."' ")
+		dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursplayed`='"..hoursplayed.."' WHERE `id`='"..id.."' ")
 	end
 end
-setTimer(saveData, 60000, 0)
+addEventHandler("kaydet:dakikavesaat",getRootElement(), veriKaydetDakikaveSaat)
+
+addEvent("kaydet:seviyevesaat", true)
+function veriKaydetSeviyeveAmac(client)
+	local level = getElementData(client, "level")
+	local hoursaim = getElementData(client, "hoursaim")
+	local id = getElementData(client, "dbid") -- account:character:id
+	if id then
+		dbExec(mysql:getConnection(),"UPDATE `characters` SET `level`='"..level.."' WHERE `id`='"..id.."' ")
+		dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursaim`='"..hoursaim.."' WHERE `id`='"..id.."' ")
+	end
+end
+addEventHandler("kaydet:seviyevesaat",getRootElement(), veriKaydetSeviyeveAmac)
 
 local setHunger = function(thePlayer, commandName, targetPlayerName, hunger)
 	if exports.mrp_integration:isPlayerAdmin(thePlayer) then

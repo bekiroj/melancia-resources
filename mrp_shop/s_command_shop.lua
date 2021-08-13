@@ -4,13 +4,13 @@ shops = {
     -- Eşya Adı, Fiyat, Türü, Yemek & Su İse Vereceğı Puan / Item ID, Item Value
     [1] = {
         {"Burger", 10, "eat", 20},
-        {"Sandviç", 20, "eat", 20},
+        {"Pizza", 14, "eat", 40},
         {"Spagetti", 30, "eat", 20},
-        {"Sosisli", 40, "eat", 20},
-        {"Tako", 50, "eat", 20},
-        {"Donut", 60, "eat", 20},
-        {"Su", 50, "drink", 20},
-        {"Gazoz", 50, "drink", 20},
+        {"Sosisli", 40, "eat", 100},
+        {"Tako", 15, "eat", 15},
+        {"Donut", 20, "eat", 50},
+        {"Su", 7, "drink", 40},
+        {"Gazoz", 12, "drink", 50},
     },
     [2] = {
         {"Su", 50, "drink", 20},
