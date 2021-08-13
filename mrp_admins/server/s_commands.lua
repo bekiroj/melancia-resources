@@ -1620,7 +1620,7 @@ addCommandHandler("paradagit",
 				for index, value in ipairs(getElementsByType("player")) do
 					if getElementData(value, "loggedin") == 1 then
 						exports["mrp_global"]:giveMoney(value, amount)
-						outputChatBox(syntaxTable["s"].."Melancia Roleplay'dan herkese "..exports["mrp_global"]:formatMoney(amount).."$ hediye!", value, 255, 255, 255, true)
+						outputChatBox(syntaxTable["s"].."Melancia Roleplay'dan herkese "..exports["mrp_global"]:formatMoney(amount).."₺ hediye!", value, 255, 255, 255, true)
 					end
 				end
 			end
