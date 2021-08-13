@@ -9,7 +9,7 @@ function _render()
         if voicePlayers[v] then
             local vecSoundPos = v.position
             local vecCamPos = Camera.position
-            local fMaxVol = 30
+            local fMaxVol = 15
             local fVoiceMode = v:getData("currentVoice") or 1
             local fMinDistance = v:getData("minDist") or 5
             local fMaxDistance = v:getData("maxDist") or 25
