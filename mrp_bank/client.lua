@@ -1,6 +1,8 @@
+--@author Disco
+
 BankClass = {
     peds = {
-        {2827.8005371094, 2764.2036132812, 16.395889282227, 9, 0, 183.09269714355}
+        {2827.0895996094, 2764.1870117188, 16.395889282227, 9, 0, 176}
 		
 	};
 	ScreenSize = Vector2(guiGetScreenSize());
@@ -96,14 +98,3 @@ addEventHandler('BankBrowser-CloseBrowser', root, function() instance.onGUIClose
 addEventHandler('BankBrowser-ReadyBrowser', root, function() instance.onGUIReady(); end)
 addEventHandler('BankBrowser-DepositMoney', root, function(amount) if exports.mrp_global:hasMoney(localPlayer, tonumber(amount)) then triggerServerEvent('BankBrowser-DepositMoney', localPlayer, tonumber(amount)) BankReceiver:executeJavascript("change('curbalance', '"..(localPlayer:getData("bankmoney")+tonumber(amount)).."')"); else outputChatBox("Bank of Santos:#ffffff Yeterli paranız olmadığı için parayı kabul edemiyoruz.", 100, 100, 100, true) end end)
 addEventHandler('BankBrowser-WidthrawMoney', root, function(amount) local amount = tonumber(amount) if localPlayer:getData('bankmoney') >= amount then triggerServerEvent('BankBrowser-WidthrawMoney', localPlayer, tonumber(amount)) else outputChatBox("Bank of Santos:#ffffff Hesabınızda yeterli para yok.", 100, 100, 100, true) end end)
-
-
-
-
-
-
-
-
-
-
-
