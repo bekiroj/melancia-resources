@@ -1,30 +1,26 @@
-﻿local mysql = exports.mrp_mysql
-addEvent("kaydet:dakikavesaat", true)
-function veriKaydetDakikaveSaat(client)
-	local minutesplayed = getElementData(client, "minutesPlayed")
-	local hoursplayed = getElementData(client, "hoursplayed")
-	local id = getElementData(client, "dbid") -- account:character:id
-	if id then
-		dbExec(mysql:getConnection(),"UPDATE `characters` SET `minutesPlayed`='"..minutesplayed.."' WHERE `id`='"..id.."' ")
-		dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursplayed`='"..hoursplayed.."' WHERE `id`='"..id.."' ")
+local mysql = exports.mrp_mysql
+
+local saveData = function()
+	for index, value in ipairs(getElementsByType("player")) do
+		if getElementData(value, 'loggedin') == 1 then
+			local id = getElementData(value, "dbid")
+			if id then
+				local minutesplayed = getElementData(value, "minutesPlayed")
+				local hoursplayed = getElementData(value, "hoursplayed")
+				local level = getElementData(value, "level")
+				local hoursaim = getElementData(value, "hoursaim")
+				dbExec(mysql:getConnection(),"UPDATE `characters` SET `minutesPlayed`='"..minutesplayed.."' WHERE `id`='"..id.."' ")
+				dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursplayed`='"..hoursplayed.."' WHERE `id`='"..id.."' ")
+				dbExec(mysql:getConnection(),"UPDATE `characters` SET `level`='"..level.."' WHERE `id`='"..id.."' ")
+				dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursaim`='"..hoursaim.."' WHERE `id`='"..id.."' ")
+			end
+		end
 	end
 end
-addEventHandler("kaydet:dakikavesaat",getRootElement(), veriKaydetDakikaveSaat)
+setTimer(saveData, 60000, 0)
 
-addEvent("kaydet:seviyevesaat", true)
-function veriKaydetSeviyeveAmac(client)
-	local level = getElementData(client, "level")
-	local hoursaim = getElementData(client, "hoursaim")
-	local id = getElementData(client, "dbid") -- account:character:id
-	if id then
-		dbExec(mysql:getConnection(),"UPDATE `characters` SET `level`='"..level.."' WHERE `id`='"..id.."' ")
-		dbExec(mysql:getConnection(),"UPDATE `characters` SET `hoursaim`='"..hoursaim.."' WHERE `id`='"..id.."' ")
-	end
-end
-addEventHandler("kaydet:seviyevesaat",getRootElement(), veriKaydetSeviyeveAmac)
-
-function setHunger(thePlayer, commandName, targetPlayerName, hunger)
-	if exports.mrp_integration:isPlayerDeveloper(thePlayer) then
+local setHunger = function(thePlayer, commandName, targetPlayerName, hunger)
+	if exports.mrp_integration:isPlayerAdmin(thePlayer) then
 		if not targetPlayerName or not hunger then
 			outputChatBox("SÖZDİZİMİ: /" .. commandName .. " [Oyuncu Adı / ID] [Açlık]", thePlayer, 255, 194, 14)
 		else
@@ -43,9 +39,8 @@ function setHunger(thePlayer, commandName, targetPlayerName, hunger)
 end
 addCommandHandler("sethunger", setHunger)
 
--- /setthirst for Admin+
-function setThirst(thePlayer, commandName, targetPlayerName, thirst)
-	if exports.mrp_integration:isPlayerDeveloper(thePlayer) then
+local setThirst = function(thePlayer, commandName, targetPlayerName, thirst)
+	if exports.mrp_integration:isPlayerAdmin(thePlayer) then
 		if not targetPlayerName or not thirst then
 			outputChatBox("SÖZDİZİMİ: /" .. commandName .. " [Oyuncu Adı / ID] [Susuzluk]", thePlayer, 255, 194, 14)
 		else
@@ -64,11 +59,11 @@ function setThirst(thePlayer, commandName, targetPlayerName, thirst)
 end
 addCommandHandler("setthirst", setThirst)
 
-function levelInfo(player, cmd)
-	if getElementData(player, 'loggedin') == 1 then
-		local hoursplayed = getElementData(player, 'hoursplayed') or 0
-		local hoursaim = getElementData(player, 'hoursaim') or 0
-		outputChatBox('[Melancia]#D0D0D0 Oynadığınız saat: '..hoursplayed..' / Level yükselmeniz için '..hoursaim..' saat oynamanız gerekiyor.',player, 195,184,116,true)
+local info = function(player, cmd)
+	if getElementData(player, "loggedin") == 1 then
+		local hoursplayed = getElementData(player, "hoursplayed") or "N/AS"
+		local hoursaim = getElementData(player, "hoursaim") or "N/A"
+		outputChatBox('[Melancia]#D0D0D0 Oynama Saatin:'..hoursplayed..' / Level atlamak için '..hoursaim..' saat oyunda durmanız gerek.',player,195,184,116,true)
 	end
 end
-addCommandHandler('level', levelInfo)
+addCommandHandler("level", info)
