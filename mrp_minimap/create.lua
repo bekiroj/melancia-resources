@@ -1,21 +1,21 @@
 function getZoneNameEx(x, y, z)
 	local zone = getZoneName(x, y, z)
 	if zone == 'East Beach' then
-		return 'Bayrampaşa'
+		return 'Bayrampasa'
 	elseif zone == 'Ganton' then
-		return 'Bağcılar'
+		return 'Bagcılar'
 	elseif zone == 'East Los Santos' then
-		return 'Bayrampaşa'
+		return 'Bayrampasa'
 	elseif zone == 'Las Colinas' then
-		return 'Çatalca'
+		return 'Catalca'
 	elseif zone == 'Jefferson' then
 		return 'Esenler'
 	elseif zone == 'Glen Park' then
 		return 'Esenler'
 	elseif zone == 'Downtown Los Santos' then
-		return 'Kağıthane'
+		return 'Kagıthane'
 	elseif zone == 'Commerce' then
-		return 'Beyoğlu'
+		return 'Beyoglu'
 	elseif zone == 'Market' then
 		return 'Mecidiyeköy'
 	elseif zone == 'Temple' then
@@ -57,7 +57,7 @@ function getZoneNameEx(x, y, z)
 	elseif zone == 'Idlewood' then
 		return 'Güngören'
 	elseif zone == 'El Corona' then
-		return 'Küçükçekmece'
+		return 'Kücükcekmece'
 	elseif zone == 'Unity Station' then
 		return 'Merter'
 	elseif zone == 'Little Mexico' then
