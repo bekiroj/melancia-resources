@@ -231,7 +231,7 @@ function startTalkToPed ()
 		return
 	end
 
-	processMessage(thePed, "Geçmek mi istiyorsun, geçmek için yeni zama göre 30$ vermek zorundasın.")
+	processMessage(thePed, "Geçmek mi istiyorsun, geçmek için yeni zama göre 12₺ vermek zorundasın.")
 	setConvoState(thePlayer, 1)
 	local responseArray = { "Geçeceğim.", "Geçmek istemiyorum." }
 	triggerClientEvent(thePlayer, "toll:interact", thePed, responseArray)
@@ -246,16 +246,16 @@ function processOpenTolls(tollKey, thePed, thePlayer, payByBank)
 				return -- Has no Toll Pass
 			end
 
-			local money = getElementData(thePlayer, "bankmoney") - 30
+			local money = getElementData(thePlayer, "bankmoney") - 12
 			if money >= 0 then
 				exports.mrp_anticheat:changeProtectedElementDataEx(thePlayer, "bankmoney", money, false)
-				dbExec(mysql:getConnection(), "UPDATE characters SET bankmoney=bankmoney-30 WHERE id=" .. (getElementData( thePlayer, "dbid" )))
-				outputChatBox("[Santos Gişeleri] Banka hesabınızdan 30$ alındı.", thePlayer, 0, 255, 0)
+				dbExec(mysql:getConnection(), "UPDATE characters SET bankmoney=bankmoney-12 WHERE id=" .. (getElementData( thePlayer, "dbid" )))
+				outputChatBox("[Santos Gişeleri] Banka hesabınızdan 12₺ alındı.", thePlayer, 0, 255, 0)
 			else
 				return "Bankada yeterli paran yok."
 			end
 		else
-			if not exports.mrp_global:takeMoney(thePlayer, 30) then
+			if not exports.mrp_global:takeMoney(thePlayer, 12) then
 				return "Paran yoksa geçemezsin."
 			end
 		end
