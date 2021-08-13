@@ -1756,52 +1756,6 @@ function vehicleLimit(admin, command, player, limit)
 end
 addCommandHandler("setvehlimit", vehicleLimit)
 
-function giveChip(thePlayer, commandName, target, chip, ...)
-	if exports.mrp_integration:isPlayerDeveloper(thePlayer) then
-		if not (target) or not chip or not (...) then
-			outputChatBox("[*] SÖZDİZİMİ: /" .. commandName .. " [Karakter Adı & ID] [Chip] [Sebep]", thePlayer, 255, 194, 14)
-		else
-			local username = getPlayerName(thePlayer)
-			local targetPlayer, targetPlayerName = exports.mrp_global:findPlayerByPartialNick(thePlayer, target)
-
-			if targetPlayer then
-				chip = tonumber(chip) or 0
-				if chip and chip > 500000 then
-					outputChatBox("Güvenlik sebebiyle 500.000 TL'den yüksek bir değer giremezsin.", thePlayer, 255, 0, 0)
-					return false
-				end
-
-				if not exports.mrp_casino:giveChip(targetPlayer, chip) then
-					outputChatBox("Could not give player that amount.", thePlayer, 255, 0, 0)
-					return false
-				end
-
-				exports.mrp_logs:dbLog(thePlayer, 4, targetPlayer, "GIVECHIP " ..chip)
-
-
-				local amount = exports.mrp_global:formatMoney(chip)
-				reason = table.concat({...}, " ")
-				outputChatBox("Başarıyla " .. targetPlayerName .. " isimli oyuncuya toplam " .. amount .. " TL verdin.", thePlayer)
-				outputChatBox("Yetkili " .. username .. " sana toplam " .. amount .. " TL verdi.", targetPlayer)
-				outputChatBox("Sebep: " .. reason .. ".", targetPlayer)
-
-				local targetUsername = string.gsub(getElementData(targetPlayer, "account:username"), "_", " ")
-				targetUsername = (targetUsername)
-				local targetCharacterName = (targetPlayerName)
-
-
-				if tonumber(chip) >= 5000 then
-					exports.mrp_global:sendMessageToAdmins("[GIVECHIP] " .. username .. " isimli yetkili ("..targetUsername..") "..targetCharacterName.." isimli oyuncuya " .. amount .. " Chip verdi. ("..reason.."). Bilgi: https://www.Melanciaroleplay.com/")
-				else
-					exports.mrp_global:sendMessageToAdmins("[GIVECHIP] " .. username .. " isimli yetkili ("..targetUsername..") "..targetCharacterName.." isimli oyuncuya " .. amount .. " Chip verdi. ("..reason..").")
-				end
-
-			end
-		end
-	end
-end
-addCommandHandler("givechip", giveChip, false, false)
-
 function charIDtoName(thePlayer, commandName, input)
 	if exports.mrp_integration:isPlayerTrialAdmin(thePlayer) then
 		if not input then
@@ -1837,3 +1791,18 @@ function gotopos(thePlayer, cmd, x, y, z)
 	end
 end
 addCommandHandler("gotopos", gotopos)
+
+function traceNumber(admin, cmd, player)
+	if exports.mrp_integration:isPlayerDeveloper(admin) then
+		local tplayer, targetPlayerName = exports.mrp_global:findPlayerByPartialNick(admin, player)
+		telefonNumaramGoster = "Telefon Yok"
+		telefonItems = exports["item-system"]:getItems(tplayer)
+		for i, val in ipairs(telefonItems) do
+			if val[1] == 2 then
+				telefonNumaramGoster = val[2]
+			end
+		end
+		outputChatBox("#FF0000[!]#ffffff "..targetPlayerName.." isimli kişinin numarası: "..telefonNumaramGoster, admin, 0, 0, 0, true)
+	end
+end
+addCommandHandler("tracenumber", traceNumber)
