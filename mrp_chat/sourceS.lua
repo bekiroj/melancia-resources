@@ -816,7 +816,7 @@ addCommandHandler("pmkapat",
 	function(player, cmd)
 		if getElementData(player, "loggedin") == 1 then
 			local yt = getElementData(player, 'youtuber') or 0
-			if exports.mrp_integration:isPlayerTrialAdmin(player) or getElementData(player, 'vip') >= 1 or yt == 1 then
+			if exports.mrp_integration:isPlayerTrialAdmin(player) or exports.mrp_integration:isPlayerSupporter(player) or getElementData(player, 'vip') >= 1 or yt == 1 then
 				if not getElementData(player, "pm:off") then
 					setElementData(player, "pm:off", true)
 					outputChatBox(exports.mrp_pool:getServerSyntax(false, "e").."Özel mesaj alımları başarıyla kapatıldı.", player, 255, 255, 255, true)
@@ -832,7 +832,7 @@ addCommandHandler("pmaç",
 	function(player, cmd)
 		if getElementData(player, "loggedin") == 1 then
 			local yt = getElementData(player, 'youtuber') or 0
-			if exports.mrp_integration:isPlayerTrialAdmin(player) or getElementData(player, 'vip') >= 1 or yt == 1 then
+			if exports.mrp_integration:isPlayerTrialAdmin(player) or exports.mrp_integration:isPlayerSupporter(player) or getElementData(player, 'vip') >= 1 or yt == 1 then
 				if getElementData(player, "pm:off") then
 					setElementData(player, "pm:off", false)
 					outputChatBox(exports.mrp_pool:getServerSyntax(false, "e").."Özel mesaj alımları başarıyla aktifleştirildi.", player, 255, 255, 255, true)
