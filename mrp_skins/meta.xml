@@ -1,0 +1,259 @@
+﻿<meta>
+
+	<!--
+	    
+		@okarosa
+		@editor:okarosa
+		Redamancy Roleplay 2020 - Skin Loader System Copyright
+	
+	-->
+
+	<oop>true</oop>
+	
+	<script src="shop/server.lua" type="server" />
+	<script src="shop/client.lua" type="client" cache="false"/>	
+	
+	<script src = "client.lua" type = "client" cache="false" />
+	<script src = "server.lua" type = "server" />
+
+
+	
+	<!-- Nasıl yüklenir?
+		- Skini files klasörünün içerisine txd ve dff olarak atacaksın ve aşağıya 24'teki örnek gibi iki şekilde yapıştıracaksın,
+		modelinide skinin yükleneceği ID yapacaksın.
+	-->
+	
+	<!-- male skins -->
+	<file src = "files/1.txd" download = "false" model = "1" />
+	<file src = "files/1.dff" download = "false" model = "1" />	
+	<file src = "files/2.txd" download = "false" model = "2" />
+	<file src = "files/2.dff" download = "false" model = "2" />	
+ 	<file src = "files/7.txd" download = "false" model = "7" />
+	<file src = "files/7.dff" download = "false" model = "7" />	
+	<file src = "files/14.txd" download = "false" model = "14" />
+	<file src = "files/14.dff" download = "false" model = "14" />	
+	<file src = "files/15.txd" download = "false" model = "15" />
+	<file src = "files/15.dff" download = "false" model = "15" />	
+	<file src = "files/16.txd" download = "false" model = "16" />
+	<file src = "files/16.dff" download = "false" model = "16" />	
+	<file src = "files/30.txd" download = "false" model = "30" />
+	<file src = "files/30.dff" download = "false" model = "30" />
+	<file src = "files/47.txd" download = "false" model = "47" />
+	<file src = "files/47.dff" download = "false" model = "47" />
+	<file src = "files/48.txd" download = "false" model = "48" />
+	<file src = "files/48.dff" download = "false" model = "48" />
+	<file src = "files/96.txd" download = "false" model = "96" />
+	<file src = "files/96.dff" download = "false" model = "96" />
+	<file src = "files/67.txd" download = "false" model = "67" />
+	<file src = "files/67.dff" download = "false" model = "67" />
+	<file src = "files/299.txd" download = "false" model = "299" />
+	<file src = "files/299.dff" download = "false" model = "299" />
+	<file src = "files/104.txd" download = "false" model = "104" />
+	<file src = "files/104.dff" download = "false" model = "104" />
+	<file src = "files/101.txd" download = "false" model = "101" />
+	<file src = "files/101.dff" download = "false" model = "101" />
+	<file src = "files/102.txd" download = "false" model = "102" />
+	<file src = "files/102.dff" download = "false" model = "102" />
+	<file src = "files/29.txd" download = "false" model = "29" />
+	<file src = "files/29.dff" download = "false" model = "29" />	
+	<file src = "files/60.txd" download = "false" model = "60" />
+	<file src = "files/60.dff" download = "false" model = "60" />	
+	<file src = "files/66.txd" download = "false" model = "66" />
+	<file src = "files/66.dff" download = "false" model = "66" />	
+	<file src = "files/54.txd" download = "false" model = "54" />
+	<file src = "files/54.dff" download = "false" model = "54" />	
+	<file src = "files/63.txd" download = "false" model = "63" />
+	<file src = "files/63.dff" download = "false" model = "63" />	
+	<file src = "files/64.txd" download = "false" model = "64" />
+	<file src = "files/64.dff" download = "false" model = "64" />	
+	<file src = "files/75.txd" download = "false" model = "75" />
+	<file src = "files/75.dff" download = "false" model = "75" />	
+	<file src = "files/234.txd" download = "false" model = "234" />
+	<file src = "files/234.dff" download = "false" model = "234" />	
+	<file src = "files/228.txd" download = "false" model = "228" />
+	<file src = "files/228.dff" download = "false" model = "228" />	
+	<file src = "files/111.txd" download = "false" model = "111" />
+	<file src = "files/111.dff" download = "false" model = "111" />	
+	<file src = "files/122.txd" download = "false" model = "122" />
+	<file src = "files/122.dff" download = "false" model = "122" />	
+	<file src = "files/124.txd" download = "false" model = "124" />
+	<file src = "files/124.dff" download = "false" model = "124" />	
+	<file src = "files/125.txd" download = "false" model = "125" />
+	<file src = "files/125.dff" download = "false" model = "125" />	
+	<file src = "files/153.txd" download = "false" model = "153" />
+	<file src = "files/153.dff" download = "false" model = "153" />	
+	<file src = "files/173.txd" download = "false" model = "173" />
+	<file src = "files/173.dff" download = "false" model = "173" />	
+	<file src = "files/174.txd" download = "false" model = "174" />
+	<file src = "files/174.dff" download = "false" model = "174" />	
+	<file src = "files/165.txd" download = "false" model = "165" />
+	<file src = "files/165.dff" download = "false" model = "165" />	
+	<file src = "files/175.txd" download = "false" model = "175" />
+	<file src = "files/175.dff" download = "false" model = "175" />	
+	<file src = "files/176.txd" download = "false" model = "176" />
+	<file src = "files/176.dff" download = "false" model = "176" />	
+	<file src = "files/202.txd" download = "false" model = "202" />
+	<file src = "files/202.dff" download = "false" model = "202" />	
+	<file src = "files/123.txd" download = "false" model = "123" />
+	<file src = "files/123.dff" download = "false" model = "123" />	
+	<file src = "files/128.txd" download = "false" model = "128" />
+	<file src = "files/128.dff" download = "false" model = "128" />	
+	<file src = "files/133.txd" download = "false" model = "133" />
+	<file src = "files/133.dff" download = "false" model = "133" />	
+	<file src = "files/136.txd" download = "false" model = "136" />
+	<file src = "files/136.dff" download = "false" model = "136" />	
+	<file src = "files/132.txd" download = "false" model = "132" />
+	<file src = "files/132.dff" download = "false" model = "132" />	
+	<file src = "files/206.txd" download = "false" model = "206" />
+	<file src = "files/206.dff" download = "false" model = "206" />	
+	<file src = "files/218.txd" download = "false" model = "218" />
+	<file src = "files/218.dff" download = "false" model = "218" />	
+	<file src = "files/236.txd" download = "false" model = "236" />
+	<file src = "files/236.dff" download = "false" model = "236" />	
+	<file src = "files/240.txd" download = "false" model = "240" />
+	<file src = "files/240.dff" download = "false" model = "240" />	
+	<file src = "files/250.txd" download = "false" model = "250" />
+	<file src = "files/250.dff" download = "false" model = "250" />	
+	<file src = "files/223.txd" download = "false" model = "223" />
+	<file src = "files/223.dff" download = "false" model = "223" />	
+	<file src = "files/247.txd" download = "false" model = "247" />
+	<file src = "files/247.dff" download = "false" model = "247" />	
+	<file src = "files/267.txd" download = "false" model = "267" />
+	<file src = "files/267.dff" download = "false" model = "267" />	
+	<file src = "files/258.txd" download = "false" model = "258" />
+	<file src = "files/258.dff" download = "false" model = "258" />	
+	<file src = "files/259.txd" download = "false" model = "259" />
+	<file src = "files/259.dff" download = "false" model = "259" />	
+	<file src = "files/282.txd" download = "false" model = "282" />
+	<file src = "files/282.dff" download = "false" model = "282" />	
+	<file src = "files/283.txd" download = "false" model = "283" />
+	<file src = "files/283.dff" download = "false" model = "283" />	
+	<file src = "files/288.txd" download = "false" model = "288" />
+	<file src = "files/288.dff" download = "false" model = "288" />	
+	<file src = "files/292.txd" download = "false" model = "292" />
+	<file src = "files/292.dff" download = "false" model = "292" />	
+	<file src = "files/294.txd" download = "false" model = "294" />
+	<file src = "files/294.dff" download = "false" model = "294" />	
+	<file src = "files/295.txd" download = "false" model = "295" />
+	<file src = "files/295.dff" download = "false" model = "295" />	
+	<file src = "files/303.txd" download = "false" model = "303" />
+	<file src = "files/303.dff" download = "false" model = "303" />	
+	<file src = "files/311.txd" download = "false" model = "311" />
+	<file src = "files/311.dff" download = "false" model = "311" />	
+	<file src = "files/312.txd" download = "false" model = "312" />
+	<file src = "files/312.dff" download = "false" model = "312" />	
+	<file src = "files/156.txd" download = "false" model = "156" />
+	<file src = "files/156.dff" download = "false" model = "156" />	
+	<file src = "files/34.txd" download = "false" model = "34" />
+	<file src = "files/34.dff" download = "false" model = "34" />	
+	<file src = "files/23.txd" download = "false" model = "23" />
+	<file src = "files/23.dff" download = "false" model = "23" />	
+	<file src = "files/179.txd" download = "false" model = "179" />
+	<file src = "files/179.dff" download = "false" model = "179" />
+	<file src = "files/204.txd" download = "false" model = "204" />
+	<file src = "files/204.dff" download = "false" model = "204" />
+	<file src = "files/135.txd" download = "false" model = "135" />
+	<file src = "files/135.dff" download = "false" model = "135" />
+	<file src = "files/134.txd" download = "false" model = "134" />
+	<file src = "files/134.dff" download = "false" model = "134" />
+	<file src = "files/188.txd" download = "false" model = "188" />
+	<file src = "files/188.dff" download = "false" model = "188" />
+	<file src = "files/108.txd" download = "false" model = "108" />
+	<file src = "files/108.dff" download = "false" model = "108" />
+	<file src = "files/239.txd" download = "false" model = "239" />
+	<file src = "files/239.dff" download = "false" model = "239" />
+	<file src = "files/265.txd" download = "false" model = "265" />
+	<file src = "files/265.dff" download = "false" model = "265" />
+	<file src = "files/266.txd" download = "false" model = "266" />
+	<file src = "files/266.dff" download = "false" model = "266" />
+	<file src = "files/163.txd" download = "false" model = "163" />
+	<file src = "files/163.dff" download = "false" model = "163" />
+	<file src = "files/298.txd" download = "false" model = "298" />
+	<file src = "files/298.dff" download = "false" model = "298" />
+	<file src = "files/306.txd" download = "false" model = "306" />
+	<file src = "files/306.dff" download = "false" model = "306" />
+	<file src = "files/309.txd" download = "false" model = "309" />
+	<file src = "files/309.dff" download = "false" model = "309" />
+	
+	
+       
+	<!-- female skins -->
+	<file src = "files/40.txd" download = "false" model = "40" />
+	<file src = "files/40.dff" download = "false" model = "40" />	
+	<file src = "files/69.txd" download = "false" model = "69" />
+	<file src = "files/69.dff" download = "false" model = "69" />	
+	<file src = "files/41.txd" download = "false" model = "41" />
+	<file src = "files/41.dff" download = "false" model = "41" />	
+	<file src = "files/45.txd" download = "false" model = "45" />
+	<file src = "files/45.dff" download = "false" model = "45" />	
+	<file src = "files/55.txd" download = "false" model = "55" />
+	<file src = "files/55.dff" download = "false" model = "55" />	
+	<file src = "files/56.txd" download = "false" model = "56" />
+	<file src = "files/56.dff" download = "false" model = "56" />	
+	<file src = "files/90.txd" download = "false" model = "90" />
+	<file src = "files/90.dff" download = "false" model = "90" />	
+	<file src = "files/91.txd" download = "false" model = "91" />
+	<file src = "files/91.dff" download = "false" model = "91" />	
+	<file src = "files/92.txd" download = "false" model = "92" />
+	<file src = "files/92.dff" download = "false" model = "92" />	
+	<file src = "files/93.txd" download = "false" model = "93" />
+	<file src = "files/93.dff" download = "false" model = "93" />	
+	<file src = "files/138.txd" download = "false" model = "138" />
+	<file src = "files/138.dff" download = "false" model = "138" />	
+	<file src = "files/141.txd" download = "false" model = "141" />
+	<file src = "files/141.dff" download = "false" model = "141" />	
+ 	<file src = "files/151.txd" download = "false" model = "151" />
+	<file src = "files/151.dff" download = "false" model = "151" />	
+	<file src = "files/152.txd" download = "false" model = "152" />
+	<file src = "files/152.dff" download = "false" model = "152" />	
+	<file src = "files/191.txd" download = "false" model = "191" />
+	<file src = "files/191.dff" download = "false" model = "191" />	
+	<file src = "files/193.txd" download = "false" model = "193" />
+	<file src = "files/193.dff" download = "false" model = "193" />	
+	<file src = "files/211.txd" download = "false" model = "211" />
+	<file src = "files/211.dff" download = "false" model = "211" />	
+	<file src = "files/257.txd" download = "false" model = "257" />
+	<file src = "files/257.dff" download = "false" model = "257" />	
+	<file src = "files/256.txd" download = "false" model = "256" />
+	<file src = "files/256.dff" download = "false" model = "256" />	
+	<file src = "files/263.txd" download = "false" model = "263" />
+	<file src = "files/263.dff" download = "false" model = "263" />	
+	<file src = "files/237.txd" download = "false" model = "237" />
+	<file src = "files/237.dff" download = "false" model = "237" />	
+	<file src = "files/238.txd" download = "false" model = "238" />
+	<file src = "files/238.dff" download = "false" model = "238" />	
+	<file src = "files/245.txd" download = "false" model = "245" />
+	<file src = "files/245.dff" download = "false" model = "245" />	
+	<file src = "files/38.txd" download = "false" model = "38" />
+	<file src = "files/38.dff" download = "false" model = "38" />
+    <file src = "files/13.txd" download = "false" model = "13" />
+	<file src = "files/13.dff" download = "false" model = "13" />		
+    <file src = "files/43.txd" download = "false" model = "43" />
+	<file src = "files/43.dff" download = "false" model = "43" />   
+	<file src = "files/11.txd" download = "false" model = "11" />
+	<file src = "files/11.dff" download = "false" model = "11" /> 
+    <file src = "files/9.txd" download = "false" model = "9" />
+	<file src = "files/9.dff" download = "false" model = "9" />  
+    <file src = "files/10.txd" download = "false" model = "10" />
+	<file src = "files/10.dff" download = "false" model = "10" />
+    <file src = "files/140.txd" download = "false" model = "140" />
+	<file src = "files/140.dff" download = "false" model = "140" />	
+	<file src = "files/286.txd" download = "false" model = "286" />
+	<file src = "files/286.dff" download = "false" model = "286" />	
+	<file src = "files/51.txd" download = "false" model = "51" />
+	<file src = "files/51.dff" download = "false" model = "51" />	
+	<file src = "files/52.txd" download = "false" model = "52" />
+	<file src = "files/52.dff" download = "false" model = "52" />	
+	<file src = "files/polis.txd" download = "false" model = "129" />
+	<file src = "files/polis.dff" download = "false" model = "129" />	
+	<file src = "files/polis2.txd" download = "false" model = "130" />
+	<file src = "files/polis2.dff" download = "false" model = "130" />	
+	<file src = "files/medic1.txd" download = "false" model = "142" />
+	<file src = "files/medic1.dff" download = "false" model = "142" />	
+	<file src = "files/medic2.txd" download = "false" model = "143" />
+	<file src = "files/medic2.dff" download = "false" model = "143" />	
+	<file src = "files/medic3.txd" download = "false" model = "144" />
+	<file src = "files/medic3.dff" download = "false" model = "144" />	
+	<file src = "files/medic4.txd" download = "false" model = "145" />
+	<file src = "files/medic4.dff" download = "false" model = "145" />	
+</meta>
