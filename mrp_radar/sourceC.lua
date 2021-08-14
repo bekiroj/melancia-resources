@@ -824,52 +824,52 @@ local locations = {
 		z = 22.753429412842
 	},
 	[2] = {
-		text = "Kamyoncu Mesleği",
+		text = "Taşıma Mesleği",
 		blipSelectedID = 68,
 		blipSize = 1,
-		x = 99.4296875, 
-		y = -1541.2080078125, 
-		z =  6.4078483581543
+		x = 2471.7109375,  
+		y = -2092.5986328125,
+		z =  13.546875
 	},
 	[3] = {
-		text = "Dondurmacı Mesleği",
-		blipSelectedID = 38,
+		text = "Beton Mesleği",
+		blipSelectedID = 70,
 		blipSize = 1,
-		x = 99.4296875, 
-		y = -1541.2080078125, 
-		z =  6.4078483581543	
+		x = 2318.8740234375,
+		y = -2060.8818359375,
+		z =  13.546875 	
 	},
 	[4] = {
-		text = "Los Santos Bankası",
+		text = "Taksi Merkezi",
+		blipSelectedID = 71,
+		blipSize = 1,
+		x = 1789.6982421875,  
+		y = -1920.3603515625,
+		z =  13.392391204834
+	},
+	[5] = {
+		text = "Türkiye Finans",
 		blipSelectedID = 52,
 		blipSize = 1,
 		x = 1457.1572265625, 
 		y = -1009.8046875, 
 		z = 27.207847595215
 	},
-	[5] = {
-		text = "Oduncu Mesleği",
-		blipSelectedID = 39,
-		blipSize = 1,
-		x = -350.11328125, 
-		y = -1035.8984375, 
-		z = 60.707851409912
-	},
 	[6] = {
-		text = "Casino",
-		blipSelectedID = 73,
+		text = "İskele",
+		blipSelectedID = 9,
 		blipSize = 1,
-		x = 1250.38671875, 
-		y = -1581.7431640625, 
-		z = 13.207857131958
+		x = 369.9423828125,  
+		y = -2047.26171875,
+		z = 7.8359375
 	},
 	[7] = {
-		text = "Los Santos Dorm",
-		blipSelectedID = 58,
+		text = "Kumarhane",
+		blipSelectedID = 73,
 		blipSize = 1,
-		x = 1296.0458984375,
-		y = -1424.865234375, 
-		z = 14.953125
+		x = 1111.916015625,  
+		y = -1371.6943359375,
+		z = 13.984375
 	},
 	[8] = {
 		text = "/birlikkur",
