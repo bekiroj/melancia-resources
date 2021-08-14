@@ -1,446 +1,777 @@
+cache = {}
+white = "#9c9c9c"
+options = {}
+screen = Vector2(guiGetScreenSize())
+center = Vector2(screen.x/2, screen.y/2)
+size = Vector2(200, 500)
+sizes = {
+    ["top"] = Vector2(452, 62),
+    ["center"] = Vector2(456, 33),
+    ["bottom"] = Vector2(452, 40),
+    ["search"] = Vector2(230, 20),
+}
+a = "files/"
 
+minLines = 1
+maxLines = math.floor((screen.y - 150 - (sizes["top"].y + sizes["bottom"].y + 110)) / 35)
+if maxLines >= 15 then maxLines = 15 end
+_maxLines = maxLines
 
---[[ Configuration ]]--
-local SCOREBOARD_WIDTH				= 400				-- The scoreboard window width
-local SCOREBOARD_HEIGHT				= 460				-- The scoreboard window height
-local SCOREBOARD_HEADER_HEIGHT		= 20				-- Height for the header in what you can see the server info
-local SCOREBOARD_TOGGLE_CONTROL		= "tab"				-- Control/Key to toggle the scoreboard visibility
-local SCOREBOARD_PGUP_CONTROL		= "mouse_wheel_up"	-- Control/Key to move one page up
-local SCOREBOARD_PGDN_CONTROL		= "mouse_wheel_down"-- Control/Key to move one page down
-local SCOREBOARD_DISABLED_CONTROLS	= { "next_weapon",	-- Controls that are disabled when the scoreboard is showing
-										"previous_weapon",
-										"aim_weapon",
-										"radio_next",
-										"radio_previous" }
-local SCOREBOARD_TOGGLE_TIME		= 0				-- Time in miliseconds to make the scoreboard (dis)appear
-local SCOREBOARD_POSTGUI			= true				-- Set to true if it must be drawn over the GUI
-local SCOREBOARD_INFO_BACKGROUND	= { 0, 0, 0, 200 }			-- RGBA color for the info header background
-local SCOREBOARD_SERVER_NAME_COLOR	= { 255, 255, 255, 255 }		-- RGBA color for the server name text
-local SCOREBOARD_PLAYERCOUNT_COLOR	= { 255, 255, 255, 255 }	-- RGBA color for the server player count text
-local SCOREBOARD_BACKGROUND			= { 0, 0, 0, 160 }			-- RGBA color for the background
-local SCOREBOARD_BACKGROUND_IMAGE	= { 255, 255, 255, 225 }		-- RGBA color for the background image
-local SCOREBOARD_HEADERS_COLOR		= { 200, 200, 200, 160 }	-- RGBA color for the headers
-local SCOREBOARD_SEPARATOR_COLOR	= { 200, 200, 200, 255 }		-- RGBA color for the separator line between headers and body content
-local SCOREBOARD_SCROLL_BACKGROUND	= { 0, 0, 0, 160 }		-- RGBA color for the scroll background
-local SCOREBOARD_SCROLL_FOREGROUND	= { 125, 125, 125, 175 }		-- RGBA color for the scroll foreground
-local SCOREBOARD_SCROLL_HEIGHT		= 60						-- Size for the scroll marker
-local SCOREBOARD_COLUMNS_WIDTH		= { 0.08, 0.50, 0.20, 0.18, 0.04 }	-- Relative width for each column: id, player name, ping and scroll position
-local SCOREBOARD_ROW_GAP			= 0							-- Gap between rows
+--
+import("*"):from("mrp_core")
 
-local font = exports.mrp_fonts:getFont('Roboto', 9.5)
-local bgb_alpha = 255
-local bgb_state = "-"
+addEventHandler("onClientResourceStart", root,
+    function(startedRes)
+        if getResourceName(startedRes) == "mrp_core" then
+            import("*"):from("mrp_core")
+            --startCustomChat()
+        end
+    end
+)
 
---[[ Global variables to this context ]]--
-local g_isShowing = false		-- Marks if the scoreboard is showing
-local g_currentWidth = 0		-- Current window width. Used for the fade in/out effect.
-local g_currentHeight = 0		-- Current window height. Used for the fade in/out effect.
-local g_scoreboardDummy			-- Will contain the scoreboard dummy element to gather info from.
-local g_windowSize = { guiGetScreenSize () }	-- The window size
-local g_localPlayer = getLocalPlayer ()			-- The local player...
-local g_currentPage = 0			-- The current scroll page
-local g_players					-- We will keep a cache of the conected player list
-local g_oldControlStates		-- To save the old control states before disabling them for scrolling
+bindKey("tab", "down",
+    function()
+        if localPlayer:getData("loggedin") ~= 1 then return end
+        if not freezeInteract then
+            sTimer = setTimer(
+                function()
+                    if getKeyState("tab") then
+                        freezeInteract = true
+                    end
+                end, 2200, 1
+            )
+            startScore()
+        else
+            freezeInteract = false
+            stopScore()
+        end
+    end
+)
 
---[[ Pre-calculate some stuff ]]--
--- Scoreboard position
-local SCOREBOARD_X = math.floor ( ( g_windowSize[1] - SCOREBOARD_WIDTH ) / 2 )
-local SCOREBOARD_Y = math.floor ( ( g_windowSize[2] - SCOREBOARD_HEIGHT ) / 1.6 )
--- Scoreboard colors
-SCOREBOARD_INFO_BACKGROUND = tocolor ( unpack ( SCOREBOARD_INFO_BACKGROUND ) )
-SCOREBOARD_SERVER_NAME_COLOR = tocolor ( unpack ( SCOREBOARD_SERVER_NAME_COLOR ) )
-SCOREBOARD_PLAYERCOUNT_COLOR = tocolor ( unpack ( SCOREBOARD_PLAYERCOUNT_COLOR ) )
-SCOREBOARD_BACKGROUND = tocolor ( unpack ( SCOREBOARD_BACKGROUND ) )
-SCOREBOARD_BACKGROUND_IMAGE = tocolor ( unpack ( SCOREBOARD_BACKGROUND_IMAGE ) )
-SCOREBOARD_HEADERS_COLOR = tocolor ( unpack ( SCOREBOARD_HEADERS_COLOR ) )
-SCOREBOARD_SCROLL_BACKGROUND = tocolor ( unpack ( SCOREBOARD_SCROLL_BACKGROUND ) )
-SCOREBOARD_SCROLL_FOREGROUND = tocolor ( unpack ( SCOREBOARD_SCROLL_FOREGROUND ) )
-SCOREBOARD_SEPARATOR_COLOR = tocolor ( unpack ( SCOREBOARD_SEPARATOR_COLOR ) )
--- Columns width in absolute units
-for k=1,#SCOREBOARD_COLUMNS_WIDTH do
-	SCOREBOARD_COLUMNS_WIDTH[k] = math.floor ( SCOREBOARD_COLUMNS_WIDTH[k] * SCOREBOARD_WIDTH )
+bindKey("tab", "up",
+    function()
+        if localPlayer:getData("loggedin") ~= 1 then return end
+        if not freezeInteract then
+            stopScore()
+        end
+    end
+)
+
+bindKey("mouse_wheel_up", "down",
+    function()
+        if state then
+            if minLines - 1 >= 1 then
+                playSound("files/wheel.wav")
+                minLines = minLines - 1
+                maxLines = maxLines - 1
+            end
+        end
+    end
+)
+
+bindKey("mouse_wheel_down", "down",
+    function()
+        if state then
+            local text = "" 
+            if textbars["search"] then
+                text = textbars["search"][2][2]
+            end
+            local count = #cache
+
+            if #text > 0 then
+                count = #searchCache
+            end
+            
+            if maxLines + 1 <= count then
+                playSound("files/wheel.wav")
+                minLines = minLines + 1
+                maxLines = maxLines + 1
+            end
+        end
+    end
+)
+
+addEventHandler("onClientClick", root,
+    function(b, s)
+        if state then
+            if b == "left" and s == "down" then
+                if isInSlot(_sX, _sY, _sW, _sH) then
+                    scrolling = true
+                end
+            elseif b == "left" and s == "up" then
+                if scrolling then
+                    scrolling = false
+                end
+            end
+        end
+    end
+)
+
+startAnimation = "InOutQuad"
+startAnimationTime = 140 -- / 1000 = 0.2 másodperc
+function startScore()
+    if localPlayer:getData("loggedin") ~= 1 then return end   
+    _state = state
+    scrolling = false
+    state = true
+    slots = localPlayer:getData("serverslot") or 300
+    multipler = 20
+    alpha = 0
+    cacheCreate()
+    if not _state then
+        addEventHandler("onClientRender", root, drawnScoreboard, true, "low-5")
+    end
+    playerDetails["realplayers"] = 0
+    playerDetails["players"] = 0
+    if not start then
+        start = true
+        startTick = getTickCount()
+    end
+    bar = false
+    
+    exports['mrp_dx']:createLogoAnimation("score", 1, {0,0,492 * 0.15,566 * 0.15}, {10000, 1000})
 end
--- Pre-calculate each row horizontal bounding box.
-local rowsBoundingBox = { { SCOREBOARD_X, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } }
--- ID
-rowsBoundingBox[1][2] = SCOREBOARD_X + SCOREBOARD_COLUMNS_WIDTH[1]
--- Name
-rowsBoundingBox[2][1] = rowsBoundingBox[1][2]
-rowsBoundingBox[2][2] = rowsBoundingBox[2][1] + SCOREBOARD_COLUMNS_WIDTH[2]
--- Seviye
-rowsBoundingBox[3][1] = rowsBoundingBox[2][2]
-rowsBoundingBox[3][2] = rowsBoundingBox[3][1] + SCOREBOARD_COLUMNS_WIDTH[3]
--- Ping
-rowsBoundingBox[4][1] = rowsBoundingBox[3][2]
-rowsBoundingBox[4][2] = rowsBoundingBox[4][1] + SCOREBOARD_COLUMNS_WIDTH[4]
 
-rowsBoundingBox[5][1] = rowsBoundingBox[4][2]
-rowsBoundingBox[5][2] = SCOREBOARD_X + SCOREBOARD_WIDTH
-
-
-local onRender
-local fadeScoreboard
-local drawBackground
-local drawScoreboard
-
-local function clamp ( valueMin, current, valueMax )
-	if current < valueMin then
-		return valueMin
-	elseif current > valueMax then
-		return valueMax
-	else
-		return current
-	end
+function stopScore()
+    if localPlayer:getData("loggedin") ~= 1 then return end
+    if isTimer(sTimer) then
+        killTimer(sTimer)
+    end
+    if start then
+    --  Clear()
+        --removeEventHandler("onClientRender", root, drawnScoreboard)
+        --state = false
+        start = false
+        exports['mrp_dx']:stopLogoAnimation("score")
+        startTick = getTickCount()
+    --    cacheDestroy()
+    end
 end
 
-local function createPlayerCache ( ignorePlayer )
-	if ignorePlayer then
-		g_players = {}
+function dxDrawOuterBorder(x, y, w, h, borderSize, borderColor, postGUI)
+	borderSize = borderSize or 2
+	borderColor = borderColor or tocolor(0, 0, 0, 255)
+	
+    --local dxDrawRectangle = _dxDrawRectangle
+	dxDrawRectangle(x - borderSize, y - borderSize, w + (borderSize * 2), borderSize, borderColor, postGUI)
+	dxDrawRectangle(x, y + h, w, borderSize, borderColor, postGUI)
+	dxDrawRectangle(x - borderSize, y, borderSize, h + borderSize, borderColor, postGUI)
+	dxDrawRectangle(x + w, y, borderSize, h + borderSize, borderColor, postGUI)
+end
+
+playerDetails = {
+    ["players"] = 0,
+    ["realplayers"] = 0,
+}
+
+function updatePlayerDetails()
+    if localPlayer:getData("loggedin") ~= 1 then return end
+    
+    if animState then
+        if playerDetails["players"] ~= #cache then
+            playerDetails["players"] = #cache
+            playerDetails["playersAnimation"] = true
+            playerDetails["playersAnimationTick"] = getTickCount()
+        end
+    end
+end
+setTimer(updatePlayerDetails, 50, 0)
+
+function drawnScoreboard()
+    local now = getTickCount()
+    local nowTick = now
+    if start then
+        local elapsedTime = nowTick - startTick
+        local duration = (startTick + startAnimationTime) - startTick
+        local progress = elapsedTime / duration
+        local alph = interpolateBetween(
+            0, 0, 0,
+            255, 0, 0,
+            progress, startAnimation
+        )
+        
+        alpha = alph
+        
+        if progress >= 1 then
+            animState = true
+        end
+    else
+        local elapsedTime = nowTick - startTick
+        local duration = (startTick + startAnimationTime) - startTick
+        local progress = elapsedTime / duration
+        local alph = interpolateBetween(
+            255, 0, 0,
+            0, 0, 0,
+            progress, startAnimation
+        )
+        
+        alpha = alph
+        
+        if progress >= 1 then
+            animState = false
+            alpha = 0
+            Clear()
+            cacheDestroy()
+            state = false
+            removeEventHandler("onClientRender", root, drawnScoreboard)
+        end
+    end
+
+    font = exports['mrp_fonts']:getFont("Roboto", 11)
+    font2 = exports['mrp_fonts']:getFont("Roboto", 10)
+    --fontBig = exports['mrp_fonts']:getFont("Roboto", 12)
+    --local count = #cache
+    local text = "" 
+    if textbars["search"] then
+        text = textbars["search"][2][2]
+    end
+    local count = count
+    local _count = count
+    
+    if #text > 0 then
+        count = #searchCache
+        _count = count
+    end
+    --outputChatBox("countStart: " .. count)
+    if count >= _maxLines then
+        count = _maxLines
+    end
+    
+    --outputChatBox("count: " .. count)
+    --outputChatBox("maxLines: " .. maxLines)
+    local y = center.y - ((((count) * sizes["center"].y + 2) + (sizes["top"].y + sizes["bottom"].y)) / 2)
+    --a Cikklus helyett kell 1 matematikai egyenlet
+    local fullY = sizes["top"].y
+    --local count = 0
+    
+    for i = minLines, maxLines do
+        if #text > 0 and searchCache[i] or #text <= 0 and cache[i] then
+            local v = searchCache[i]
+            if not v then
+                v = cache[i]
+            end
+            
+            fullY = fullY + sizes["center"].y + 2
+        end
+    end
+    fullY = fullY - 2 + sizes["bottom"].y
+    
+    exports['mrp_dx']:updateLogoPos("score", {center.x,y - 50,492 * 0.15,566 * 0.15})
+    --dxDrawImage(center.x - sizes["top"].x/2, y, sizes["top"].x, sizes["top"].y, sources["top"], 0,0,0, tocolor(255,255,255,alpha))
+    dxDrawRectangle(center.x - sizes["top"].x/2 - 2, y - 2, 452 + 4, fullY + 2, tocolor(31,31,31,math.min(255 * 0.95, alpha)))
+    dxDrawRectangle(center.x - sizes["top"].x/2, y, 452, 32, tocolor(255,255,255,math.min(255 * 0.05, alpha)))
+    dxDrawText("Melancia#4a4a4a Roleplay", center.x - sizes["top"].x/2 + 10, y, center.x - sizes["top"].x/2 + 452 - 10, y + 32, tocolor(200,200,200,alpha), 1, font, "left", "center",false,false,false,true)
+    
+    local gW, gH = 110, 18
+    local gX, gY = center.x + sizes["top"].x/2 - 10 - gW, y + 32/2 - gH/2
+    dxDrawRectangle(gX,gY,gW,gH, tocolor(0,0,0,math.min(255 * 0.15, alpha)))
+    
+    local gX = gX + 1
+    local gY = gY + 1
+    local gW = gW - 2
+    local gH = gH - 2
+    local nowTick = getTickCount()
+    local k = "players"
+    if playerDetails[k.."Animation"] then
+        local startTick = playerDetails[k.."AnimationTick"]
+
+        local elapsedTime = nowTick - startTick
+        local duration = (startTick + 500) - startTick
+        local progress = elapsedTime / duration
+        local alph = interpolateBetween(
+            playerDetails["real"..k] * 100, 0, 0,
+            playerDetails[k] * 100, 0, 0,
+            progress, "InOutQuad"
+        )
+        playerDetails["real"..k] = alph/100
+
+        if progress >= 1 then
+            playerDetails[k.."Animation"] = false
+        end
+        --multipler = alph / 100
+    end
+    local gMultipler = playerDetails["real"..k] / slots
+    --local gMultipler = #cache / slots
+    if gMultipler >= 1 then
+        gMultipler = 1
+    end
+    dxDrawRectangle(gX,gY,gW * gMultipler,gH, tocolor(61,122,188,math.min(255 * 1, alpha)))
+    
+    dxDrawText(#cache.."/"..slots, gX, gY , gX + gW, gY + gH, tocolor(200,200,200,math.min(255 * 0.5, alpha)), 1, font2, "center", "center")
+    local gColor = "#4a4a4a"
+    
+    local tx = center.x - sizes["top"].x/2 + 16
+    dxDrawText(gColor.."#", tx, y + 32, tx, y + 32 + (sizes["top"].y - 32), tocolor(255,255,255,math.min(255 * 1, alpha)), 1, font, "center", "center", false, false, false, true)
+    
+    local tx = center.x - sizes["top"].x/2 + 65
+    dxDrawText(gColor.."ID", tx, y + 32, tx, y + 32 + (sizes["top"].y - 32), tocolor(255,255,255,math.min(255 * 1, alpha)), 1, font, "center", "center", false, false, false, true)
+    
+    local tx = center.x - sizes["top"].x/2 + 200
+    dxDrawText(gColor.."Karakter Adı", tx, y + 32, tx, y + 32 + (sizes["top"].y - 32), tocolor(255,255,255,math.min(255 * 1, alpha)), 1, font, "center", "center", false, false, false, true)
+    
+    local tx = center.x - sizes["top"].x/2 + 350
+    dxDrawText(gColor.."Level", tx, y + 32, tx, y + 32 + (sizes["top"].y - 32), tocolor(255,255,255,math.min(255 * 1, alpha)), 1, font, "center", "center", false, false, false, true)
+    
+    local tx = center.x - sizes["top"].x/2 + 430 -- ping
+    dxDrawText(gColor.."Ping", tx, y + 32, tx, y + 32 + (sizes["top"].y - 32), tocolor(255,255,255,math.min(255 * 1, alpha)), 1, font, "center", "center", false, false, false, true)
+    
+    y = y + sizes["top"].y
+    --local count = 0
+    local __StartY = y
+    
+    for i = minLines, maxLines do
+        if #text > 0 and searchCache[i] or #text <= 0 and cache[i] then
+            local tooltip, tooltipLines = false, 0
+            local v = searchCache[i]
+            if not v then
+                v = cache[i]
+            end
+            local loggedin = v["loggedin"]
+            local timedout = v["timedout"]
+            local id = v["id"]
+            local aduty = v["duty_admin"]
+            local aColor = "#ff0000"
+            local aTitle = "Yetkili"
+            local name = v["name"]
+            local lvl = v["lvl"]
+            local avatar = v["avatar"]
+            local ping = v["ping"]
+            local pingColor = v["pingColor"]
+            dxDrawRectangle(center.x - sizes["center"].x/2, y, sizes["center"].x - 7, sizes["center"].y, tocolor(255,255,255,math.min(255 * 0.05, alpha)))
+            
+            local rx = center.x - sizes["top"].x/2 + 16 -- avatar
+            
+            dxDrawOuterBorder(rx - 25/2, y + sizes["center"].y/2 - 25/2, 25, 25, 1, tocolor(44, 77, 115, alpha))
+            dxDrawImage(rx - 23/2, y + sizes["center"].y/2 - 23/2, 23, 23, ":mrp_auth/img/"..getElementModel(localPlayer)..".png", 0,0,0, tocolor(255,255,255,alpha))
+
+            local rx = center.x - sizes["top"].x/2 + 65 -- id
+            dxDrawText(id or 0, rx, y, rx, y + sizes["center"].y, tocolor(156, 156, 156,(loggedin and alpha) or math.min(255 * 0.25, alpha)), 1, font, "center", "center",false,false,false,true)
+
+            if loggedin then
+                local rx = center.x - sizes["top"].x/2 + 350 -- szint
+                dxDrawText(lvl, rx, y, rx, y + sizes["center"].y, tocolor(156, 156, 156,alpha), 1, font, "center", "center",false,false,false,true)
+            end
+
+            local rx = center.x - sizes["top"].x/2 + 430 -- ping
+            --dxDrawText(pingColor .. ping, rx, y, rx, y + sizes["center"].y, tocolor(156, 156, 156,(loggedin and alpha) or math.min(255 * 0.25, alpha)), 1, font, "center", "center",false,false,false,true)
+            
+            local n = 20
+            if loggedin then
+                dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-normal.png", 0,0,0, tocolor(117, 209, 111,math.min(255 * 0.25, alpha)))
+                if ping <= 60 then -- normal
+                    dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-normal.png", 0,0,0, tocolor(117, 209, 111,alpha))
+                elseif ping <= 130 then -- medium
+                    dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-medium.png", 0,0,0, tocolor(255, 209, 84,alpha))    
+                elseif ping >= 130 then -- bad
+                    dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-low.png", 0,0,0, tocolor(227, 79, 79,alpha))    
+                end
+            else
+                dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-normal.png", 0,0,0, tocolor(220, 220, 220,math.min(255 * 0.25, alpha)))
+                if ping <= 60 then -- normal
+                    dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-normal.png", 0,0,0, tocolor(220, 220, 220,math.min(50, alpha)))
+                elseif ping <= 130 then -- medium
+                    dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-medium.png", 0,0,0, tocolor(220, 220, 220,math.min(50, alpha)))
+                elseif ping >= 130 then -- bad
+                    dxDrawImage(rx - n/2, y + sizes["center"].y/2 - n/2, n, n, "files/ping-low.png", 0,0,0, tocolor(220, 220, 220,math.min(50, alpha)))  
+                end
+            end
+            
+            if aduty then
+                name = aColor .. "[" .. aTitle .. "] " .. white .. name
+            end
+            
+            local pingTooltip
+            if isInSlot(rx - n/2, y + sizes["center"].y/2 - n/2, n, n) then
+                pingTooltip = true
+                exports['mrp_dx']:drawTooltip(1, pingColor .. ping)
+            end
+
+            local alpha = alpha
+            if not loggedin then
+                --name = "#9c9c9c" .. name .
+                local w = dxGetTextWidth(name,1,font, true)
+                local h = dxGetFontHeight(1, font)
+                local x,y = center.x - sizes["top"].x/2 + 200 - w/2, y + sizes["center"].y/2 - h/2
+                if not pingTooltip and isInSlot(x, y, w, h) then
+                    tooltip = "#9c9c9cŞu an işaretli şahıs MB yükleme ekranında"
+                    tooltipLines = tooltipLines + 1
+                end
+            end
+
+            if timedout then
+                local _, newAlpha = interpolateBetween(-5, 0, 0, 5, alpha, 0, now / 2500, "CosineCurve")
+                alpha = newAlpha
+                
+                local w = dxGetTextWidth(name,1,font, true)
+                local h = dxGetFontHeight(1, font)
+                local x,y = center.x - sizes["top"].x/2 + 200 - w/2, y + sizes["center"].y/2 - h/2
+                --dxDrawRectangle(x,y,w,h)
+                if not pingTooltip and isInSlot(x, y, w, h) then
+                    --exports['mrp_dx']:drawTooltip("#d23131Internethiba", 1)
+                    if tooltipLines >= 1 then
+                        tooltip = tooltip.."\n#d23131Şu an işaretli şahısta bağlantı sorunu var."
+                    end
+                    tooltipLines = tooltipLines + 1
+                end
+                
+                --name = "#d23131" .. name .. " (Internethiba)"
+            end
+            
+            if tooltip then
+                exports['mrp_dx']:drawTooltip(1, tooltip)
+            end
+
+            local rx = center.x - sizes["top"].x/2 + 200 -- név
+            dxDrawText(name or "Anan", rx, y, rx, y + sizes["center"].y, tocolor(156, 156, 156,(loggedin and alpha) or math.min(255 * 0.25, alpha)), 1, font, "center", "center",false,false,false,true)
+
+            y = y + sizes["center"].y + 2
+        end
+    end
+    
+    y = y - 2
+    
+    --scrollboard
+    
+    local percent = #cache
+    if #text > 0 then
+        percent = #searchCache
+    end
+    
+    if percent >= 1  then
+        local gW, gH = 5, y - __StartY
+        local gX, gY = center.x + sizes["center"].x/2 - gW, __StartY
+        _sX, _sY, _sW, _sH = gX, gY, gW, gH
+        
+        if scrolling then
+            if isCursorShowing() then
+                if getKeyState("mouse1") then
+                    local cx, cy = exports['mrp_core']:getCursorPosition()
+                    local cy = math.min(math.max(cy, _sY), _sY + _sH)
+                    local y = (cy - _sY) / (_sH)
+                    local num = percent * y
+                    minLines = math.max(1, math.floor(math.min(math.max(num, 1), (percent - _maxLines) + 1)))
+                    maxLines = minLines + (_maxLines - 1)
+                end
+            else
+                scrolling = false
+            end
+        end
+        
+        dxDrawRectangle(gX,gY,gW,gH, tocolor(255,255,255,math.min(255 * 0.05, alpha)))
+        --[[
+        if not percent[key + (maxColumns * (maxLines - 1))] then
+            key = 1
+            _key = key - 1
+        end
+
+        local percent = #percent
+        local _percent = percent
+
+        if percent / maxColumns ~= math.floor(percent / maxColumns) then
+            --percent = ((percent / maxColumns) + (math.ceil(percent / maxColumns) - (percent / maxColumns))) * maxColumns
+            percent = math.ceil(percent / maxColumns) * maxColumns
+        end]]
+
+        --outputChatBox("1>"..(maxColumns * (maxLines - 1)))
+        --outputChatBox("2>"..percent)
+        local multiplier = math.min(math.max((maxLines - (minLines - 1)) / percent, 0), 1)
+        --outputChatBox("3>".._key)
+        local multiplier2 = math.min(math.max((minLines - 1) / percent, 0), 1)
+        local gY = gY + ((gH) * multiplier2)
+        local gH = gH * multiplier
+        local r,g,b = exports['mrp_coloration']:getServerColor("blue")
+        dxDrawRectangle(gX+1, gY+1, gW-2, gH-2, tocolor(r,g,b, alpha))
+        --
+        --dxDrawImage(center.x - sizes["bottom"].x/2, y, sizes["bottom"].x, sizes["bottom"].y, sources["bottom"], 0,0,0, tocolor(255,255,255,alpha))
+        --local rx = center.x - sizes["bottom"].x/2 + 10
+        --local ry = y + 5
+    end
+    
+    --dxDrawRectangle(center.x - 500, y, 500, 40)
+    local x, y, w, h = center.x - sizes["search"].x/2, y + sizes["bottom"].y/2 - sizes["search"].y/2, sizes["search"].x, sizes["search"].y
+    
+    if not bar then
+        CreateNewBar("search", {x,y,w,h}, {25, "", false, nil, font2, 1, "center", "center"}, 1)
+        bar = true
+    else
+        UpdatePos("search", {x,y,w,h, alpha})
+    end
+    
+    dxDrawRectangle(x,y,w,h, tocolor(255,255,255,math.min(255 * 0.04, alpha)))
+    dxDrawImage(x,y,w,h, "files/search.png", 0,0,0, tocolor(255,255,255,alpha))
+    --dxDrawRectangle(rx - sizes["search"].x/2, ry - sizes["search"].y/2, sizes["search"].x, sizes["search"].y)
+    
+    --local rx = center.x + sizes["center"].x/2 - 10
+    
+    --dxDrawText("Online játékosok: #d97c0e"..#cache.."/"..slots, rx, y, rx, y + sizes["center"].y, tocolor(255,255,255,alpha), 1, font, "right", "center",false,false,false,true)
+    --y = y + sizes["bottom"].y
+    --dxDrawImage(center.x - sizes["staymta"].x/2, y, sizes["staymta"].x, sizes["staymta"].y, sources["staymta"], 0,0,0, tocolor(255,255,255,alpha))
+end
+
+--Cache Function
+function cacheCreate()
+    if state then
+        --outputChatBox("asd")
+        cacheDestroy()
 		
-		local players = getElementsByType ( "player" )
-	
-		for k, player in ipairs(players) do
-			if ignorePlayer ~= player then
-				table.insert ( g_players, player )
-			end
-		end
-	else
-		g_players = getElementsByType ( "player" )
-	end
-	
-	table.sort ( g_players, function ( a, b )
-		local idA = getElementData ( a, "playerid" ) or 0
-		local idB = getElementData ( b, "playerid" ) or 0
+        local a = 1
+        for k,v in pairs(getElementsByType("player")) do
+            if v ~= localPlayer then
+                local details = cacheGetDetails(v)
+                table.insert(cache, details)
+                a = a + 1
+            end
+        end
+        
+        --[[local names = {
+            "Thomas_Stevens",
+            "Joey_Briton",
+            "Emanuel_Estephan",
+            "Elliot_Carney",
+            "Bobby_Morse",
+            "Maison_Gould",
+            "Frederick_John",
+            "Corey_Sargent",
+            "Deangelo_Bernard",
+            "Michael_Taylor",
+            "Oliver_Morgan",
+            "Griffin_Powell",
+            "May_Brighton",
+            "Jack_Emanuel",
+            "Jack_Stephen",
+            "Joe_Boe",
+            "Joe_Boe",
+            "Joe_Boe",
+        }
 
-		if a == g_localPlayer then
-			idA = -1
-		elseif b == g_localPlayer then
-			idB = -1
-		end
-		
-		return tonumber(idA) < tonumber(idB)
-	end )
+        for i = 3, 500 do
+            local ped = createPed(107, 0, 0,0)
+            ped:setData("level", math.random(2, 15))
+            local num = math.random(1, 15)
+            local num2 = math.random(1, 2)
+            if num == 10 then num = 1 end
+            if num2 == 1 then
+                num2 = true
+            else
+                num2 = false
+            end
+            --local name = names[i - 3]
+            if num2 then
+                ped:setData("avatar", num)
+                ped:setData("loggedIn", num2)
+            end
+            --ped:setData("name", names[math.random(1, 2)])
+            --outputChatBox(names[i - 3])
+            local details = cacheGetDetails(ped, names[math.random(1, #names)])
+            details["id"] = i
+            table.insert(cache, details)
+            a = a + 1
+        end--]]
+        
+        count = a
+
+        local details = cacheGetDetails(localPlayer)
+        table.insert(cache, 1, details)
+        
+        table.sort(cache, function(a, b)
+            if a["element"] and b["element"] and a["element"] ~= localPlayer and b["element"] ~= localPlayer and a["id"] and b["id"] then
+                return tonumber(a["id"]) < tonumber(b["id"])
+            end
+        end);
+
+        if maxLines > #cache then
+            minLines = 1
+            maxLines = minLines + (_maxLines - 1)
+        end
+
+        if isTimer(pingUpdateTimer) then destroyElement(pingUpdateTimer) end
+        pingUpdateTimer = setTimer(
+            function()
+                --cacheCreate()
+                for i = minLines, maxLines do
+                    if cache[i] then
+                        local _i = i
+                        local i = cache[i]
+                        local v = i["element"]
+                        if isElement(v) then
+                            cache[_i]["ping"] = v.ping or -1
+                            cache[_i]["pingColor"] = getPingColor(v.ping or -1)
+                        else
+                            cacheCreate()
+                        end
+                    end
+                end
+            end, 1000, 0
+        )
+
+        --outputDebugString("Score: Cache - created")
+    end
 end
 
-addEventHandler ( "onClientResourceStart", getResourceRootElement(getThisResource()), function ()
-	createPlayerCache ()
-end, false )
+addEventHandler("onClientPlayerJoin", root, 
+    function()
+        setTimer(cacheCreate, 150, 1)
+    end
+)
+addEventHandler("onClientPlayerQuit", root, cacheCreate)
 
-addEventHandler ( "onClientElementDataChange", root, function ( dataName, dataValue )
-	if dataName == "playerid" then
-		createPlayerCache ()
+function cacheGetDetails(v, a2)
+    local a = {}
+	if v:getData("loggedin") == 1 then
+		v:setData("charactername", getPlayerName(v))
 	end
-end )
-
-
-addEventHandler ( "onClientPlayerQuit", root, function ()
-	createPlayerCache ( source )
-end )
-
-
-local function toggleScoreboard ( show )
-	-- Force the parameter to be a boolean
-	local show = show == true
-	
-	-- Check if the status has changed
-	if show ~= g_isShowing then
-		g_isShowing = show
-		
-		if g_isShowing and g_currentWidth == 0 and g_currentHeight == 0 then
-			-- Handle the onClientRender event to start drawing the scoreboard.
-			addEventHandler ( "onClientPreRender", root, onRender, false )
-		end
-		
-		-- Little hack to avoid switching weapons while moving through the scoreboard pages.
-		if g_isShowing then
-			g_oldControlStates = {}
-			for k, control in ipairs ( SCOREBOARD_DISABLED_CONTROLS ) do
-				g_oldControlStates[k] = isControlEnabled ( control )
-				toggleControl ( control, false )
-			end
-		else
-			for k, control in ipairs ( SCOREBOARD_DISABLED_CONTROLS ) do
-				toggleControl ( control, g_oldControlStates[k] )
-			end
-			g_oldControlStates = nil
-		end
-	end
+    a["loggedin"] = v:getData("loggedin")
+    a["timedout"] = v:getData("timedout")
+    a["id"] = v:getData("playerid") or 0
+    a["aduty"] = v:getData("duty_admin") or false
+    a["aColor"] = "#ffffff"
+    a["aTitle"] = "Ismeretlen"
+    local name = v:getData("charactername") or "Giriş yapıyor.."
+    name = string.gsub(name, "_", " ")
+    name = string.gsub(name, "#" .. (6 and string.rep("%x", 6) or "%x+"), "")
+    a["name"] = string.gsub(name, "#%x%x%x%x%x%x", "")
+    a["lvl"] = v:getData("level") or 1
+    a["avatar"] = v:getData("avatar") or 0
+    a["ping"] = v.ping - 40 or 1
+    a["pingColor"] = getPingColor(v.ping or -1)
+    a["element"] = v
+    return a
 end
 
-
-local function onToggleKey ( key, keyState )
-	if getElementData(localPlayer, 'loggedin') == 1 then
-		-- Check if the scoreboard element has been created
-		if not g_scoreboardDummy then
-			local elementTable = getElementsByType ( "arp_scoreboard" )
-			if #elementTable > 0 then
-				g_scoreboardDummy = elementTable[1]
-			else
-				return
-			end
-		end
-		--playSound("components/bleep.ogg")
-		toggleScoreboard ( keyState == "down" and getElementData ( g_scoreboardDummy, "allow" ) )
-	end
-end
-bindKey ( SCOREBOARD_TOGGLE_CONTROL, "both", onToggleKey )
-
-local function onScrollKey ( direction )
-	if g_isShowing then
-		if direction then
-			g_currentPage = g_currentPage + 1
-		else
-			g_currentPage = g_currentPage - 1
-			if g_currentPage < 0 then
-				g_currentPage = 0
-			end
-		end
-	end
-end
-bindKey ( SCOREBOARD_PGUP_CONTROL, "down", function () onScrollKey ( false ) end )
-bindKey ( SCOREBOARD_PGDN_CONTROL, "down", function () onScrollKey ( true ) end )
-
-
-onRender = function ( timeshift )
-	local drawIt = false
-	
-	if g_isShowing then
-		if not getElementData ( g_scoreboardDummy, "allow" ) then
-			toggleScoreboard ( false )
-		elseif g_currentWidth < SCOREBOARD_WIDTH or g_currentHeight < SCOREBOARD_HEIGHT then
-			drawIt = fadeScoreboard ( timeshift, 1 )
-		else
-			drawIt = true
-		end
-	else
-		drawIt = fadeScoreboard ( timeshift, -1 )
-	end
-	
-
+function cacheDestroy()
+    cache = {}
+    
+    if isTimer(pingUpdateTimer) then
+        killTimer(pingUpdateTimer)
+    end
 end
 
-fadeScoreboard = function ( timeshift, multiplier )
-	local growth = ( timeshift / SCOREBOARD_TOGGLE_TIME ) * multiplier
-	
-	g_currentWidth = clamp ( 0, g_currentWidth + ( SCOREBOARD_WIDTH * growth ), SCOREBOARD_WIDTH )
-	g_currentHeight = clamp ( 0, g_currentHeight + ( SCOREBOARD_HEIGHT * growth ), SCOREBOARD_HEIGHT )
-	
-	if g_currentWidth == 0 or g_currentHeight == 0 then
-		g_currentWidth = 0
-		g_currentHeight = 0
-		removeEventHandler ( "onClientPreRender", root, onRender )
-		return false
-	else
-		return true
-	end
+function search(e)
+    for a, b in pairs(cache) do
+        local x = b["element"]
+        if x == e then
+            return a
+        end
+    end
+    
+    --outputChatBox(i)
+    return false
 end
 
-drawBackground = function ()
-	local headerHeight = clamp ( 0, SCOREBOARD_HEADER_HEIGHT, g_currentHeight )
-	--dxDrawRectangle(SCOREBOARD_X,SCOREBOARD_Y+15,g_currentWidth,5,tocolor(255,255,255,255))
-	dxDrawRectangle ( SCOREBOARD_X, SCOREBOARD_Y-10,
-					  g_currentWidth, headerHeight+10,
-					  tocolor(125, 125, 125, 175), SCOREBOARD_POSTGUI )
-	
-	if g_currentHeight > SCOREBOARD_HEADER_HEIGHT then
-		--dxDrawText("MELANC",SCOREBOARD_X  - 1800/7, SCOREBOARD_Y - 300 ,450/2, 850/2, 0, 0, 0, SCOREBOARD_BACKGROUND_IMAGE, SCOREBOARD_POSTGUI )
-		if bgb_state == "-" then
-		bgb_alpha = bgb_alpha - 2
-		if bgb_alpha <= 0 then
-			bgb_alpha = 0
-			bgb_state = "+"
-		end
-	elseif bgb_state == "+" then
-		bgb_alpha = bgb_alpha + 2
-		if bgb_alpha >= 255 then
-			bgb_alpha = 255
-			bgb_state = "-"
-		end
-	end
-		dxDrawImage(SCOREBOARD_X, SCOREBOARD_Y, 400, 400, "components/lights.png", 0, 0, 0, tocolor(255,255, 255, bgb_alpha))
-
-		dxDrawRectangle ( SCOREBOARD_X, SCOREBOARD_Y + SCOREBOARD_HEADER_HEIGHT,
-						  g_currentWidth, g_currentHeight - SCOREBOARD_HEADER_HEIGHT,
-						  SCOREBOARD_BACKGROUND, SCOREBOARD_POSTGUI )
-	end
+function getPingColor(ping)
+    local color = "#ffffff"
+    
+    if ping <= 60 then -- zöld
+        color = "#7cc576"
+    elseif ping <= 130 then -- sárga
+        color = "#d09924"
+    elseif ping >= 130 then -- piros
+        color = "#d02424"
+    end
+    
+    return color
 end
 
-
-local function drawRowBounded ( id, name, level, ping, colors, font, top )
-	local bottom = clamp ( 0, top + dxGetFontHeight ( 1, font ), SCOREBOARD_Y + g_currentHeight )
-	local maxWidth = SCOREBOARD_X + g_currentWidth
-	
-	if bottom < top then return end
-	
-	-- ID
-	local left = rowsBoundingBox[1][1]
-	local right = clamp ( 0, rowsBoundingBox[1][2], maxWidth )
-	if left < right then
-		dxDrawText ( id, left, top, right, bottom,
-					 colors[1], 1, font, "right", "top",
-					 true, false, SCOREBOARD_POSTGUI )
-		
-		left = rowsBoundingBox[2][1] + 17 
-		right = clamp ( 0, rowsBoundingBox[2][2], maxWidth )
-		if left < right then
-			dxDrawText ( name, left, top, right, bottom,
-						 colors[2], 1, font, "left", "top",
-						 true, false, SCOREBOARD_POSTGUI )
-						 
-			-- Level
-			left = rowsBoundingBox[3][1]
-			right = clamp ( 0, rowsBoundingBox[3][2], maxWidth )
-			if left < right then
-				dxDrawText ( level, left, top, right, bottom,
-							 colors[3], 1, font, "left", "top",
-							 true, false, SCOREBOARD_POSTGUI )
-			
-				-- Ping
-				left = rowsBoundingBox[4][1]
-				right = clamp ( 0, rowsBoundingBox[4][2], maxWidth )
-				if left < right then
-					dxDrawText ( ping, left, top, right, bottom,
-								 colors[3], 1, font, "left", "top",
-								 true, false, SCOREBOARD_POSTGUI )
-				end
-			end
-		end
-	end
-end
-
-local function drawScrollBar ( top, position )
-	local left = rowsBoundingBox[5][1]
-	local right = clamp ( 0, rowsBoundingBox[5][2], SCOREBOARD_X + g_currentWidth )
-	local bottom = clamp ( 0, SCOREBOARD_Y + SCOREBOARD_HEIGHT, SCOREBOARD_Y + g_currentHeight )
-	
-	if left < right and top < bottom then
-		dxDrawRectangle ( left, top, right - left, bottom - top, SCOREBOARD_SCROLL_BACKGROUND, SCOREBOARD_POSTGUI )
-		
-		local top = top + position * ( SCOREBOARD_Y + SCOREBOARD_HEIGHT - SCOREBOARD_SCROLL_HEIGHT - top )
-		bottom = clamp ( 0, top + SCOREBOARD_SCROLL_HEIGHT, SCOREBOARD_Y + g_currentHeight )
-		
-		if top < bottom then
-			dxDrawRectangle ( left, top, right - left, bottom - top, SCOREBOARD_SCROLL_FOREGROUND, SCOREBOARD_POSTGUI )
-		end
-	end
-end
-
-
-drawScoreboard = setTimer(function ()
-	if not g_players then return end
-
-	drawBackground ()
-	
-	local serverName = " Melancia Roleplay | www.melanciaroleplay.com"
-	local maxPlayers = 4000
-	serverName = tostring ( serverName )
-	maxPlayers = tonumber ( maxPlayers )
-	
-	local left, top, right, bottom = SCOREBOARD_X + 2, SCOREBOARD_Y + 2, SCOREBOARD_X + g_currentWidth - 2, SCOREBOARD_Y + SCOREBOARD_HEADER_HEIGHT - 2
-	
-	dxDrawText ( serverName, left, top-5, right, bottom,
-				 SCOREBOARD_SERVER_NAME_COLOR, 1, font, "left", "top",
-				 true, false, SCOREBOARD_POSTGUI )
-
-
-	local usagePercent = (#g_players / maxPlayers)
-	local strPlayerCount = "Oyuncu: " .. tostring(#g_players) .. "/" .. tostring(maxPlayers) .. ""
-	
-	local offset = SCOREBOARD_WIDTH - dxGetTextWidth ( strPlayerCount, 1, "tahoma" ) - 4
-	left = left + offset
-	if left < right then
-		dxDrawText ( strPlayerCount, left-5, top-5, right, bottom,
-					SCOREBOARD_PLAYERCOUNT_COLOR, 1, font, "left", "top",
-					true, false, SCOREBOARD_POSTGUI )
-	end
-	
-	left, top, bottom = SCOREBOARD_X, SCOREBOARD_Y + SCOREBOARD_HEADER_HEIGHT + 2, SCOREBOARD_Y + g_currentHeight - 2
-
-	local rowHeight = dxGetFontHeight ( 1, font )
-	
-	drawRowBounded ( "ID", "Karakter Adı", "Level", "Gecikme",
-					 { SCOREBOARD_HEADERS_COLOR, SCOREBOARD_HEADERS_COLOR, SCOREBOARD_HEADERS_COLOR, SCOREBOARD_HEADERS_COLOR },
-					 font, top )
-	
-				 
-	top = top + rowHeight + 3
-	
-	right = clamp ( 0, rowsBoundingBox[4][2] - 5, SCOREBOARD_X + g_currentWidth )
-	if top < SCOREBOARD_Y + g_currentHeight then
-		dxDrawLine ( SCOREBOARD_X + 5, top, right, top, tocolor(45,45,45,255), 1, SCOREBOARD_POSTGUI )
-	end
-	top = top + 3
-	
-	local renderEntry = function ( player )
-		local playerID = getElementData ( player, "playerid" ) or 0
-		playerID = tostring ( playerID )
-		local playerName = getPlayerName ( player )
-		playerName = tostring ( playerName ):gsub( "_", " " )
-		local playerPing = getPlayerPing ( player )
-		playerPing = tostring ( playerPing )
-		local playerLevel = getElementData ( player, "level") or 1
-		playerLevel = tostring ( playerLevel )
-		local r, g, b = getPlayerNametagColor ( player )
-		local playerColor = tocolor ( r, g, b, 255 )
-		
-		local colors = { playerColor, playerColor, playerColor }
-		
-		top = top
-		if (getElementData(getLocalPlayer(), "duty_admin") ==1)	then
-			if getElementData(player, "loggedin") == 1 then
-				playerName = playerName .. " (" .. getElementData(player, "account:username") .. ")"
-			end
-		end
-		drawRowBounded ( playerID, playerName, playerLevel, playerPing, colors, font, top )
-	end
-	
-	local playersPerPage = math.floor ( ( SCOREBOARD_Y + SCOREBOARD_HEIGHT - top ) / ( rowHeight + SCOREBOARD_ROW_GAP ) )
-	
-	local playerShift = math.floor ( playersPerPage / 2 )
-	
-	local playersToSkip = playerShift * g_currentPage
-	if (#g_players - playersToSkip) < playersPerPage then
-		if (#g_players - playersToSkip) < playerShift then
-			g_currentPage = g_currentPage - 1
-			if g_currentPage < 0 then g_currentPage = 0 end
-		end
-
-		playersToSkip = #g_players - playersPerPage + 1
-	end
-	
-	if playersToSkip < 0 then
-		playersToSkip = 0
-	end
-
-	for k=playersToSkip + 1, #g_players do
-		local player = g_players [ k ]
-		
-		if top < bottom - rowHeight - SCOREBOARD_ROW_GAP then
-			renderEntry ( player )
-			top = top + rowHeight + SCOREBOARD_ROW_GAP
-		else break end
-	end
-
-	drawScrollBar ( SCOREBOARD_Y + SCOREBOARD_HEADER_HEIGHT + rowHeight + 8, playersToSkip / ( #g_players - playersPerPage + 1 ) )
-end,
-0,0)
-
-function isVisible ( )
-	return g_isShowing
-end
-
-function dxDrawFramedText ( message , left , top , width , height , color , scale , font , alignX , alignY , clip , wordBreak , postGUI )
-    dxDrawText ( message , left + 1 , top + 1 , width + 1 , height + 1 , tocolor ( 0 , 0 , 0 , alpha ) , scale , font , alignX , alignY , clip , wordBreak , postGUI )
-    dxDrawText ( message , left + 1 , top - 1 , width + 1 , height - 1 , tocolor ( 0 , 0 , 0 , alpha ) , scale , font , alignX , alignY , clip , wordBreak , postGUI )
-    dxDrawText ( message , left - 1 , top + 1 , width - 1 , height + 1 , tocolor ( 0 , 0 , 0 , alpha ) , scale , font , alignX , alignY , clip , wordBreak , postGUI )
-    dxDrawText ( message , left - 1 , top - 1 , width - 1 , height - 1 , tocolor ( 0 , 0 , 0 , alpha ) , scale , font , alignX , alignY , clip , wordBreak , postGUI )
-    dxDrawText ( message , left , top , width , height , color , scale , font , alignX , alignY , clip , wordBreak , postGUI )
-end
-
-function dxDrawFramedRectangle ( left, top, right, bottom, shit, shit2)
-	dxDrawRectangle ( left + 1, top + 1, right + 1 , bottom + 1, tocolor(0, 0, 0, 160), shit2 )
-	dxDrawRectangle ( left + 1, top - 1, right + 1 , bottom - 1, tocolor(0, 0, 0, 160), shit2 )
-	dxDrawRectangle ( left - 1, top + 1, right - 1 , bottom + 1, tocolor(0, 0, 0, 160), shit2 )
-	dxDrawRectangle ( left - 1, top - 1, right - 1 , bottom - 1, tocolor(0, 0, 0, 160), shit2 )
-	dxDrawRectangle ( left, top, right, bottom, shit, shit2 )
-end
+addEventHandler("onClientElementDataChange", root,
+    function(dName, oValue)
+        if state then
+            if dName == "loggedin" then
+                local k = search(source)
+                if k then
+                    local value = source:getData(dName)
+                    cache[k]["loggedin"] = value
+                end
+            elseif dName == "playerid" then
+                local k = search(source)
+                if k then
+                    local value = source:getData(dName)
+                    cache[k]["id"] = value
+                end
+            elseif dName == "timedout" then
+                local k = search(source)
+                if k then
+                    local value = source:getData(dName)
+                    cache[k]["timedout"] = value
+                end
+            elseif dName == "duty_admin" or dName == "account:username" or dName == "account:username" or dName == "admin_level" then
+                local k = search(source)
+                if source == localPlayer then
+                    --outputChatBox("asd2")
+                    --cacheCreate()
+                end
+                
+                if k then
+                    local value = source:getData(dName)
+                    if dName == "duty_admin" then
+                        cache[k]["aduty"] = value
+                    end
+                    
+                    local name = "Yetkili"
+                    name = string.gsub(name, "_", " ")
+                    cache[k]["name"] = string.gsub(name, "#%x%x%x%x%x%x", "")
+                    cache[k]["aColor"] = "#f9f9f9"
+                    cache[k]["aTitle"] = "Test"
+                    searchCache = {}
+                    if textbars["search"] and textbars["search"][2] and textbars["search"][2] then
+                        local text = string.lower(textbars["search"][2][2])
+                        if #text > 0 then
+                            for k,v in pairs(cache) do
+                                local text2 = string.lower(v["name"])
+                                local e = v["element"]
+                                if utf8.find(text2, text) then
+                                    if e == localPlayer then
+                                        table.insert(searchCache, 1, v)
+                                    else
+                                        table.insert(searchCache, v)
+                                    end
+                                end
+                            end
+                            if maxLines > #searchCache then
+                                minLines = 1
+                                maxLines = minLines + (_maxLines - 1)
+                            end
+                        end
+                    end
+                end
+            elseif dName == "name" then
+                local k = search(source)
+                if k then
+                    local name = "Test"
+                    name = string.gsub(name, "_", " ")
+                    cache[k]["name"] = string.gsub(name, "#%x%x%x%x%x%x", "")
+                    searchCache = {}
+                    local text = string.lower(textbars["search"][2][2])
+                    if #text > 0 then
+                        for k,v in pairs(cache) do
+                            local text2 = string.lower(v["name"])
+                            local e = v["element"]
+                            if utf8.find(text2, text) then
+                                if e == localPlayer then
+                                    table.insert(searchCache, 1, v)
+                                else
+                                    table.insert(searchCache, v)
+                                end
+                            end
+                        end
+                        if maxLines > #searchCache then
+                            minLines = 1
+                            maxLines = minLines + (_maxLines - 1)
+                        end
+                    end
+                end
+            elseif dName == "hoursplayed" then
+                local k = search(source)
+                if k then
+                    local value = source:getData(dName)
+                    cache[k]["lvl"] = value
+                end
+            elseif dName == "avatar" then
+                local k = search(source)
+                if k then
+                    local value = source:getData(dName)
+                    cache[k]["avatar"] = value
+                end    
+            end
+        end
+    end
+)
